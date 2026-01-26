@@ -175,7 +175,7 @@
 
       // ✅ manda al dashboard (página principal)
       setTimeout(() => {
-        window.location.href = "./dashboard.html";
+        window.location.href = "../dashboard.html";
       }, 350);
     } catch (err) {
       showAlert(err?.message || "Ocurrió un error.");

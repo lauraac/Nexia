@@ -4,7 +4,8 @@ window.NexiaTopbar = function NexiaTopbar() {
     <div class="container">
       <div class="topbar glass">
         <div class="topbar__row">
-          <a class="brand" href="./index.html" aria-label="Nexia Home">
+         <a class="brand" href="../index.html" aria-label="Nexia Home">
+
             <div class="brand__logo">N</div>
             <div class="brand__name">NEXIA</div>
           </a>

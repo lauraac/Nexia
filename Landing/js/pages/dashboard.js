@@ -160,7 +160,7 @@
   // Logout
   document.getElementById("btnLogoutDash")?.addEventListener("click", () => {
     window.NexiaAuth.logout();
-    window.location.href = "./index.html";
+    window.location.href = "../index.html";
   });
 
   // Theme toggle (same localStorage key)
@@ -216,7 +216,7 @@
     localStorage.setItem("nexia_current_doc", JSON.stringify(doc));
 
     // ir al editor (en otra pantalla)
-    window.location.href = `./editor.html?doc=${encodeURIComponent(doc.id)}`;
+    window.location.href = `../editor.html?doc=${encodeURIComponent(doc.id)}`;
   }
 
   // Tabs (placeholder)
@@ -452,7 +452,7 @@
         const U = encodeURIComponent(u.value);
 
         // 👉 aquí mandamos a “pantalla en blanco”
-        window.location.href = `./editor.html?w=${W}&h=${H}&u=${U}`;
+        window.location.href = `../editor.html?w=${W}&h=${H}&u=${U}`;
       });
     }
   }
