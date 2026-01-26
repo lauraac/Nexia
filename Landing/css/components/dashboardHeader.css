@@ -1,0 +1,28 @@
+.dbTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.dbUserPill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.smallPill {
+  padding: 10px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--btn);
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.dbActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}

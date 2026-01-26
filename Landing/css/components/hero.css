@@ -1,0 +1,73 @@
+.hero {
+  padding: 42px 0 10px;
+}
+.hero__box {
+  border-radius: 34px;
+  padding: 44px 34px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero__glow {
+  position: absolute;
+  inset: -120px -120px auto -120px;
+  height: 380px;
+  background:
+    radial-gradient(
+      circle at 30% 40%,
+      rgba(155, 92, 255, 0.4),
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 70% 50%,
+      rgba(34, 193, 255, 0.25),
+      transparent 62%
+    ),
+    radial-gradient(circle at 60% 10%, rgba(255, 79, 216, 0.2), transparent 60%);
+  filter: blur(10px);
+  pointer-events: none;
+}
+
+.hero__content {
+  position: relative;
+  display: grid;
+  gap: 18px;
+  max-width: 780px;
+}
+
+.hero__title {
+  font-size: clamp(38px, 6vw, 72px);
+  line-height: 1.02;
+  letter-spacing: -1px;
+  margin: 0;
+}
+
+.hero__subtitle {
+  margin: 0;
+  font-size: clamp(15px, 2.1vw, 20px);
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.hero__cta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+/* Chips */
+.hero__chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+@media (max-width: 640px) {
+  .hero__box {
+    padding: 28px 18px;
+    border-radius: 26px;
+  }
+}

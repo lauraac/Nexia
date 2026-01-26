@@ -1,0 +1,297 @@
+/* Editor layout */
+.ed {
+  height: 100dvh;
+  display: grid;
+  grid-template-rows: 56px 1fr;
+  background:
+    radial-gradient(
+      900px 500px at 10% 0%,
+      rgba(159, 107, 255, 0.25),
+      transparent 60%
+    ),
+    radial-gradient(
+      900px 500px at 85% 10%,
+      rgba(79, 182, 255, 0.18),
+      transparent 60%
+    ),
+    linear-gradient(180deg, rgba(10, 12, 22, 0.96), rgba(8, 10, 18, 0.96));
+  color: var(--text);
+}
+
+/* Top bar */
+.edTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: linear-gradient(
+    90deg,
+    rgba(64, 176, 255, 0.25),
+    rgba(159, 107, 255, 0.22)
+  );
+}
+.edTop__group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.edTop__spacer {
+  flex: 1;
+}
+.edTopBtn {
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.92);
+  font-weight: 800;
+  cursor: pointer;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+.edTopBtn:hover {
+  background: rgba(0, 0, 0, 0.18);
+}
+.edIconBtn {
+  width: 36px;
+  height: 36px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(0, 0, 0, 0.2);
+  color: #fff;
+  cursor: pointer;
+}
+.edTitle {
+  font-weight: 900;
+}
+.edMeta {
+  opacity: 0.85;
+  font-weight: 700;
+  font-size: 12px;
+}
+.edAvatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.14);
+}
+
+/* Body columns */
+.edBody {
+  display: grid;
+  grid-template-columns: 72px 320px minmax(0, 1fr);
+  min-height: 0;
+}
+
+/* Left tools */
+.edLeft {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.edLeft__spacer {
+  flex: 1;
+}
+.edTool {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  cursor: pointer;
+  border-radius: 14px;
+  padding: 10px 8px;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+}
+.edTool:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.92);
+}
+.edTool.is-active {
+  background: rgba(64, 176, 255, 0.14);
+  outline: 1px solid rgba(64, 176, 255, 0.25);
+  color: rgba(64, 176, 255, 1);
+}
+.edTool__ico {
+  font-size: 18px;
+}
+.edTool__txt {
+  font-weight: 900;
+  font-size: 11px;
+  line-height: 1.1;
+  text-align: center;
+}
+
+/* Side panel */
+.edPanel {
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 12px;
+  min-height: 0;
+  overflow: auto;
+  background: rgba(0, 0, 0, 0.12);
+}
+.edPanel__search {
+  border: 1px solid rgba(159, 107, 255, 0.28);
+  background: rgba(0, 0, 0, 0.18);
+  border-radius: 16px;
+  padding: 10px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.edPanel__search input {
+  width: 100%;
+  background: transparent;
+  border: 0;
+  outline: none;
+  color: var(--text);
+  font-weight: 700;
+}
+.edPanel__mic {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+}
+.edPanel__tabs {
+  display: flex;
+  gap: 10px;
+  margin: 14px 0 10px;
+}
+.edTab {
+  flex: 1;
+  border: 0;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 900;
+}
+.edTab.is-active {
+  background: rgba(64, 176, 255, 0.14);
+  color: rgba(255, 255, 255, 0.95);
+  outline: 1px solid rgba(64, 176, 255, 0.22);
+}
+.edPanel__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+.tplMini {
+  height: 120px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Canvas */
+.edCanvas {
+  position: relative;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: 1fr 60px;
+}
+
+.edStageWrap {
+  min-height: 0;
+  display: grid;
+  place-items: center;
+  padding: 16px;
+}
+
+/* ✅ El contenedor real del stage */
+#stageMount {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: grid;
+  place-items: center;
+}
+
+/* ✅ Konva mete un canvas dentro: le damos sombra al canvas */
+#stageMount canvas {
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+  border-radius: 8px;
+}
+
+/* Mobile */
+@media (max-width: 900px) {
+  .edBody {
+    grid-template-columns: 62px 1fr;
+  }
+  .edPanel {
+    display: none;
+  }
+  .edStageWrap {
+    padding: 10px;
+  }
+}
+
+/* Bottom bar */
+.edBottom {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(0, 0, 0, 0.18);
+}
+.edBottom__spacer {
+  flex: 1;
+}
+.pageChip {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-weight: 900;
+}
+.pageBtn {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  cursor: pointer;
+}
+.zoomRange {
+  width: 240px;
+}
+.zoomPct {
+  width: 52px;
+  font-weight: 900;
+  opacity: 0.9;
+}
+.edBottomBtn {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.edBottomMeta {
+  opacity: 0.85;
+  font-weight: 800;
+}
+
+/* Mobile quick adjustments */
+@media (max-width: 900px) {
+  .edBody {
+    grid-template-columns: 62px 1fr;
+  }
+  .edPanel {
+    display: none;
+  } /* luego hacemos panel tipo drawer */
+}

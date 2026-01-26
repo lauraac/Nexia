@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NEXIA | Editor</title>
+
+  <link rel="stylesheet" href="./css/tokens.css" />
+  <link rel="stylesheet" href="./css/base.css" />
+  <link rel="stylesheet" href="./css/editor/editor.css" />
+
+
+  <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+</head>
+
+<body>
+  <div class="ed">
+    <!-- TOP BAR -->
+    <header class="edTop">
+      <button class="edIconBtn" id="btnMenu" type="button" title="Menú">☰</button>
+      <div class="edTop__group">
+        <button class="edTopBtn" type="button">Archivo</button>
+        <button class="edTopBtn" type="button">Redimensionar</button>
+        <button class="edTopBtn" type="button">Editar ▾</button>
+      </div>
+
+      <div class="edTop__spacer"></div>
+
+      <div class="edTitle" id="docTitle">Diseño sin título</div>
+      <div class="edMeta" id="docMeta">—</div>
+
+      <div class="edTop__spacer"></div>
+
+      <button class="edIconBtn" type="button" title="Compartir">⤴</button>
+      <button class="edIconBtn" type="button" title="Comentarios">💬</button>
+      <div class="edAvatar" title="Cuenta"></div>
+    </header>
+
+    <!-- BODY -->
+    <div class="edBody">
+      <!-- LEFT BAR -->
+      <aside class="edLeft" aria-label="Herramientas">
+        <button class="edTool is-active" data-tool="design" type="button">
+          <span class="edTool__ico">▦</span><span class="edTool__txt">Diseño</span>
+        </button>
+        <button class="edTool" data-tool="elements" type="button">
+          <span class="edTool__ico">✦</span><span class="edTool__txt">Elementos</span>
+        </button>
+        <button class="edTool" data-tool="text" type="button">
+          <span class="edTool__ico">T</span><span class="edTool__txt">Texto</span>
+        </button>
+        <button class="edTool" data-tool="brand" type="button">
+          <span class="edTool__ico">♛</span><span class="edTool__txt">Marca</span>
+        </button>
+        <button class="edTool" data-tool="uploads" type="button">
+          <span class="edTool__ico">☁</span><span class="edTool__txt">Subidos</span>
+        </button>
+
+        <div class="edLeft__spacer"></div>
+
+        <button class="edTool" data-tool="projects" type="button">
+          <span class="edTool__ico">▤</span><span class="edTool__txt">Proyectos</span>
+        </button>
+      </aside>
+
+      <!-- SIDE PANEL -->
+      <section class="edPanel" id="edPanel">
+        <div class="edPanel__search">
+          <input type="search" placeholder="Describe tu diseño ideal" />
+          <button class="edPanel__mic" type="button" title="Mic">🎤</button>
+        </div>
+
+        <div class="edPanel__tabs">
+          <button class="edTab is-active" type="button">Plantillas</button>
+          <button class="edTab" type="button">Estilos</button>
+        </div>
+
+        <div class="edPanel__grid">
+          <div class="tplMini"></div>
+          <div class="tplMini"></div>
+          <div class="tplMini"></div>
+          <div class="tplMini"></div>
+          <div class="tplMini"></div>
+          <div class="tplMini"></div>
+        </div>
+      </section>
+
+      <!-- CANVAS AREA -->
+      <main class="edCanvas">
+        <div class="edStageWrap">
+          <div id="stageMount"></div>
+        </div>
+
+        <!-- BOTTOM BAR -->
+        <footer class="edBottom">
+          <button class="pageChip" type="button">1</button>
+          <button class="pageBtn" type="button">＋</button>
+
+          <div class="edBottom__spacer"></div>
+
+          <input id="zoomRange" class="zoomRange" type="range" min="10" max="200" value="47" />
+          <div class="zoomPct"><span id="zoomPct">47</span>%</div>
+
+          <div class="edBottom__spacer"></div>
+
+          <button class="edBottomBtn" type="button">Páginas</button>
+          <div class="edBottomMeta">1 de 1</div>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/konva@9/konva.min.js"></script>
+  <script defer src="./js/editor/editor.js"></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: var(--font);
+  color: var(--text);
+  background:
+    radial-gradient(
+      1200px 700px at 20% 0%,
+      rgba(155, 92, 255, 0.35),
+      transparent 55%
+    ),
+    radial-gradient(
+      900px 600px at 80% 20%,
+      rgba(34, 193, 255, 0.28),
+      transparent 55%
+    ),
+    linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+button,
+input {
+  font-family: inherit;
+}
+
+.container {
+  width: min(var(--container), calc(100% - 32px));
+  margin: 0 auto;
+}
+
+.tiny {
+  font-size: 12px;
+}
+.muted {
+  color: var(--muted);
+}
+
+.glass {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--btn);
+  color: var(--text);
+  cursor: pointer;
+  transition:
+    transform 0.15s var(--ease),
+    background 0.15s var(--ease);
+  user-select: none;
+}
+.btn:hover {
+  transform: translateY(-1px);
+  background: var(--btn2);
+}
+.btn:active {
+  transform: translateY(0px) scale(0.98);
+}
+
+.btn--primary {
+  border: 0;
+  background: linear-gradient(90deg, var(--a1), var(--a3), var(--a2));
+  color: white;
+  box-shadow: 0 14px 40px rgba(155, 92, 255, 0.25);
+}
+.btn--primary:hover {
+  filter: brightness(1.04);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: var(--chip);
+  border: 1px solid var(--border);
+}
+
+/* Quita scrollbars visuales (sin romper el scroll) */
+* {
+  scrollbar-width: none;
+} /* Firefox */
+*::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+} /* Chrome/Safari/Edge */
