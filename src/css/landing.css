@@ -147,3 +147,47 @@
   color: var(--muted);
   border-top: 1px solid var(--line);
 }
+@media (max-width: 520px) {
+  .navInner {
+    gap: 10px;
+  }
+
+  /* Oculta links de navegación en móvil (como Canva) */
+  .navLinks {
+    display: none;
+  }
+
+  /* Logo más compacto */
+  .brandLogo {
+    width: 34px;
+    height: 34px;
+  }
+  .brandTag {
+    display: none;
+  }
+
+  /* Botones de la derecha más compactos */
+  .pill {
+    gap: 8px;
+  }
+  .btnSmall {
+    padding: 10px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+  }
+
+  /* Si no cabe, oculta “Registrarme” y deja solo “Iniciar sesión” */
+  a[data-i18n="btn_signup"] {
+    display: none;
+  }
+}
+@media (max-width: 520px) {
+  .previewCanvas {
+    height: 260px; /* antes 380 */
+  }
+
+  .previewGlass {
+    inset: 14px; /* menos margen interno */
+    padding: 14px;
+  }
+}
