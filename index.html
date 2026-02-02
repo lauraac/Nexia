@@ -1,33 +1,122 @@
 <!doctype html>
-<html lang="es" data-theme="dark">
+<html lang="es" data-theme="dusk">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NEXIA | Inicio</title>
+  <title>Nexia | Inicio</title>
 
-  <link rel="stylesheet" href="./Landing/css/base.css" />
-  <link rel="stylesheet" href="./Landing/css/tokens.css" />
-  <link rel="stylesheet" href="./Landing/css/pages/landing.css" />
-  <link rel="stylesheet" href="./Landing/css/components/topbar.css" />
-  <link rel="stylesheet" href="./Landing/css/components/hero.css" />
-  <link rel="stylesheet" href="./Landing/css/components/auth.css" />
-
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./src/css/tokens.css" />
+  <link rel="stylesheet" href="./src/css/base.css" />
+  <link rel="stylesheet" href="./src/css/components.css" />
+  <link rel="stylesheet" href="./src/css/landing.css" />
 </head>
 
 <body>
-  <div id="app"></div>
-  /Landing
-  <script src="../Landing/js/components/topbar.js"></script>
-  <script src="../Landing/js/components/hero.js"></script>
-  <script src="../Landing/js/auth/authStore.js"></script>
-  <script src="../Landing/js/components/authModal.js"></script>
-  <script src="../Landing/js/app.js"></script>
+  <header class="nav">
+    <div class="container navInner">
+      <a class="brand" href="./index.html" aria-label="Nexia home">
+        <img src="./assets/img/icono.png" alt="Nexia logo" class="brandLogo" />
+        <span>
+          <div class="brandName">NEXIA</div>
+          <div class="brandTag">Design suite</div>
+        </span>
+      </a>
 
+      <nav class="navLinks" aria-label="Navegación principal">
+        <a href="#" data-i18n="nav_design">Diseñar</a>
+        <a href="#" data-i18n="nav_product">Producto</a>
+        <a href="#" data-i18n="nav_plans">Planes</a>
+        <a href="#" data-i18n="nav_help">Ayuda</a>
+      </nav>
+
+      <div class="spacer"></div>
+
+      <div class="pill">
+        <select id="langSel" class="btn btnSmall btnGhost" aria-label="Language">
+          <option value="es">ES</option>
+          <option value="en">EN</option>
+        </select>
+
+        <button id="btnTheme" class="btn btnSmall btnGhost" type="button" aria-label="Theme toggle">
+          <span>☾</span> <span id="themeLabel">Dusk</span>
+        </button>
+      </div>
+
+      <a class="btn btnSmall btnGhost" href="./login.html" data-i18n="btn_signup">Registrarme</a>
+      <a class="btn btnSmall btnPrimary" href="./login.html" data-i18n="btn_login">Iniciar sesión</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="heroGrid">
+        <div>
+          <span class="badge"><span class="dot"></span> Nexia • 0.1 • Local first</span>
+          <h1 class="hTitle" data-i18n="hero_title">¿Qué vamos a crear hoy?</h1>
+          <p class="hSub" data-i18n="hero_sub">
+            Crea diseños, presentaciones y contenido para redes sociales con una experiencia rápida y moderna.
+          </p>
+
+          <div class="heroActions">
+            <button id="btnStart" class="btn btnPrimary" type="button" data-i18n="hero_cta">Empieza a diseñar</button>
+            <button class="btn btnGhost" type="button" data-i18n="hero_secondary">Ver demo</button>
+            <span class="kbd">Ctrl</span><span class="kbd">K</span>
+          </div>
+        </div>
+
+        <div class="card preview">
+          <div class="previewTop">⚡ UI preview • “editor” look</div>
+          <div class="previewCanvas">
+            <div class="previewImg"
+              style="background-image:url('https://i.pinimg.com/736x/b8/30/35/b8303559de65089f6b7710c5c58bcef4.jpg');">
+            </div>
+            <div class="previewGlass">
+              <div>
+                <h3>Diseña rápido</h3>
+                <p>Plantillas + editor (próximo). Hoy dejamos lista la base con login, tema e idioma.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="fGrid">
+        <div class="card fItem">
+          <div class="ico">✨</div>
+          <h4 data-i18n="feat1_t">Plantillas inteligentes</h4>
+          <p data-i18n="feat1_p">Arranca con diseños listos y personalízalos sin complicarte.</p>
+        </div>
+
+        <div class="card fItem">
+          <div class="ico">⚡</div>
+          <h4 data-i18n="feat2_t">Editor rápido</h4>
+          <p data-i18n="feat2_p">Interacciones fluidas y UI clara para trabajar sin fricción.</p>
+        </div>
+
+        <div class="card fItem">
+          <div class="ico">📱</div>
+          <h4 data-i18n="feat3_t">Hecho para móviles</h4>
+          <p data-i18n="feat3_p">Responsive real para celular, tablet y computadora.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div class="row">
+        <div>© <span id="year"></span> Nexia • Local prototype</div>
+        <div class="spacer"></div>
+        <div>Hecho con ❤️ en modo “sin blancos agresivos”.</div>
+      </div>Diseña rápido
+    </footer>
+  </main>
+
+  <script type="module">
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+  <script type="module" src="./src/js/landing.js"></script>
 </body>
 
 </html>

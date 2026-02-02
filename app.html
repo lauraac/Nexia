@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="es" data-theme="dusk">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nexia | Plantillas</title>
+
+  <link rel="stylesheet" href="./src/css/tokens.css" />
+  <link rel="stylesheet" href="./src/css/base.css" />
+  <link rel="stylesheet" href="./src/css/app.templates.css" />
+</head>
+
+<body>
+  <!-- LEFT SIDEBAR -->
+  <aside class="sb" aria-label="Sidebar">
+    <div class="sb__top">
+      <button class="sb__iconBtn" id="btnNew" title="Crear" aria-label="Crear">
+        <!-- plus -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+
+    <nav class="sb__nav" aria-label="Navegación">
+      <button class="sb__item isActive" data-route="home" title="Inicio">
+        <span class="sb__ico">
+          <svg viewBox="0 0 24 24">
+            <path d="M4 10.5 12 4l8 6.5V20a1.5 1.5 0 0 1-1.5 1.5H5.5A1.5 1.5 0 0 1 4 20v-9.5Z" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="sb__txt">Inicio</span>
+      </button>
+
+      <button class="sb__item" data-route="projects" title="Proyectos">
+        <span class="sb__ico">
+          <svg viewBox="0 0 24 24">
+            <path d="M4.5 7.5h15v12a2 2 0 0 1-2 2h-11a2 2 0 0 1-2-2v-12Z" fill="none" stroke="currentColor"
+              stroke-width="2" />
+            <path d="M8 7.5V6a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v1.5" fill="none" stroke="currentColor" stroke-width="2" />
+          </svg>
+        </span>
+        <span class="sb__txt">Proyectos</span>
+      </button>
+
+      <button class="sb__item" data-route="templates" title="Plantillas">
+        <span class="sb__ico">
+          <svg viewBox="0 0 24 24">
+            <path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" fill="none"
+              stroke="currentColor" stroke-width="2" />
+            <path d="M8 8h8M8 12h8M8 16h6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="sb__txt">Plantillas</span>
+      </button>
+
+      <button class="sb__item" data-route="brand" title="Marca">
+        <span class="sb__ico">
+          <svg viewBox="0 0 24 24">
+            <path d="M12 3l2.6 5.4L20 11l-5.4 2.6L12 19l-2.6-5.4L4 11l5.4-2.6L12 3Z" fill="none" stroke="currentColor"
+              stroke-width="2" stroke-linejoin="round" />
+          </svg>
+        </span>
+        <span class="sb__txt">Marca</span>
+      </button>
+    </nav>
+
+    <div class="sb__bottom">
+      <button class="sb__iconBtn" id="btnBell" title="Notificaciones" aria-label="Notificaciones">
+        <span class="sb__badge" id="notifBadge">3</span>
+        <svg viewBox="0 0 24 24">
+          <path d="M12 22a2 2 0 0 0 2-2H10a2 2 0 0 0 2 2Z" fill="currentColor" />
+          <path d="M18 16v-5a6 6 0 1 0-12 0v5l-2 2h16l-2-2Z" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linejoin="round" />
+        </svg>
+      </button>
+
+      <button class="sb__iconBtn" id="btnAccount" title="Mi cuenta" aria-label="Mi cuenta">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4Z" fill="none" stroke="currentColor" stroke-width="2" />
+          <path d="M4 20a8 8 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
+    </div>
+  </aside>
+
+  <!-- TOP BAR -->
+  <header class="top">
+    <div class="top__inner">
+      <a class="brand" href="./app.html" aria-label="Nexia">
+        <span class="brand__logo">N</span>
+        <span class="brand__name">NEXIA</span>
+      </a>
+
+      <div class="top__spacer"></div>
+
+      <div class="top__actions">
+        <select id="langSel" class="top__select" aria-label="Idioma">
+          <option value="es">ES</option>
+          <option value="en">EN</option>
+        </select>
+
+        <button class="top__pill" id="btnTheme" type="button" aria-label="Tema">
+          ☾ <span id="themeLabel">Dusk</span>
+        </button>
+
+        <button class="top__pill" id="btnLogout" type="button">Salir</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main">
+    <section class="hero">
+      <h1 class="hero__title">¿Qué diseñamos hoy?</h1>
+
+      <div class="chips" role="tablist" aria-label="Filtros rápidos">
+        <button class="chip isActive" data-chip="mine">Mis diseños</button>
+        <button class="chip" data-chip="templates">Plantillas</button>
+        <button class="chip" data-chip="ai">Nexia IA</button>
+      </div>
+
+      <div class="search">
+        <span class="search__ico" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M10.5 18a7.5 7.5 0 1 1 7.5-7.5A7.5 7.5 0 0 1 10.5 18Z" fill="none" stroke="currentColor"
+              stroke-width="2" />
+            <path d="M16.5 16.5 21 21" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+        </span>
+        <input id="searchInput" class="search__input" placeholder="Busca entre miles de plantillas" />
+        <button class="search__btn" id="btnFilters" type="button" title="Filtros">⚙</button>
+      </div>
+
+      <div class="catRow" id="catRow" aria-label="Categorías rápidas"></div>
+    </section>
+
+    <!-- “Echa un vistazo a las plantillas” -->
+    <section class="sec">
+      <div class="sec__head">
+        <h2 class="sec__title">Echa un vistazo a las plantillas</h2>
+        <div class="sec__right">
+          <button class="navBtn" id="btnPrevLook" type="button" aria-label="Anterior">‹</button>
+          <button class="navBtn" id="btnNextLook" type="button" aria-label="Siguiente">›</button>
+        </div>
+      </div>
+
+      <div class="hScroll" id="lookScroll">
+        <div class="hScroll__track" id="lookTrack"></div>
+      </div>
+    </section>
+
+    <!-- “Inspirado en tus diseños” -->
+    <section class="sec">
+      <div class="sec__head">
+        <h2 class="sec__title">Inspirado en tus diseños</h2>
+      </div>
+
+      <div class="gridCards" id="inspiredGrid"></div>
+    </section>
+
+    <!-- “Descubre Nexia” -->
+    <section class="sec">
+      <div class="sec__head">
+        <h2 class="sec__title">Descubre Nexia</h2>
+      </div>
+
+      <div class="gridWide" id="discoverGrid"></div>
+    </section>
+  </main>
+
+  <!-- ACCOUNT MENU -->
+  <div class="menu" id="accountMenu" role="dialog" aria-label="Menú de cuenta">
+    <div class="menu__card">
+      <div class="menu__title">Mi cuenta</div>
+      <div class="menu__row"><span class="dot"></span> Perfil</div>
+      <div class="menu__row"><span class="dot"></span> Configuración</div>
+      <div class="menu__row"><span class="dot"></span> Suscripción</div>
+      <div class="menu__sep"></div>
+      <button class="menu__logout" id="menuLogout" type="button">Cerrar sesión</button>
+    </div>
+  </div>
+
+  <!-- NOTIFICATIONS DRAWER -->
+  <div class="drawer" id="notifDrawer" aria-label="Notificaciones">
+    <div class="drawer__card">
+      <div class="drawer__head">
+        <div class="drawer__title">Notificaciones</div>
+        <button class="drawer__close" id="closeNotif" type="button">✕</button>
+      </div>
+      <div class="drawer__list" id="notifList"></div>
+    </div>
+  </div>
+  <!-- MORE CATEGORIES SHEET (mobile) -->
+  <div class="sheet" id="moreSheet" aria-label="Más categorías">
+    <div class="sheet__backdrop" id="moreSheetBackdrop"></div>
+    <div class="sheet__card" role="dialog" aria-modal="true">
+      <div class="sheet__head">
+        <div class="sheet__title">Más categorías</div>
+        <button class="sheet__close" id="closeMoreSheet" type="button">✕</button>
+      </div>
+      <div class="sheet__grid" id="moreSheetGrid"></div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { requireAuth, logout } from "./src/js/auth.js";
+    import { initTheme, setTheme, getTheme } from "./src/js/theme.js";
+    import { initI18n, setLang, getLang } from "./src/js/i18n.js";
+
+    // Protege la pantalla
+    requireAuth();
+    initTheme();
+    initI18n();
+
+    // UI: tema + idioma (reusa tus módulos)
+    const themeLabel = document.getElementById("themeLabel");
+    const btnTheme = document.getElementById("btnTheme");
+    const langSel = document.getElementById("langSel");
+
+    function paintThemeLabel() {
+      themeLabel.textContent = getTheme() === "night" ? "Night" : "Dusk";
+    }
+    paintThemeLabel();
+
+    btnTheme.addEventListener("click", () => {
+      const next = getTheme() === "dusk" ? "night" : "dusk";
+      setTheme(next);
+      paintThemeLabel();
+    });
+
+    langSel.value = getLang();
+    langSel.addEventListener("change", (e) => setLang(e.target.value));
+
+    // Logout
+    document.getElementById("btnLogout").addEventListener("click", () => {
+      logout();
+      window.location.href = "./login.html";
+    });
+    document.getElementById("menuLogout").addEventListener("click", () => {
+      logout();
+      window.location.href = "./login.html";
+    });
+  </script>
+
+  <script type="module" src="./src/js/app.templates.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+:root {
+  /* Tipografía */
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue",
+    Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+
+  /* Layout */
+  --radius-xl: 22px;
+  --radius-lg: 16px;
+  --shadow-1: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --shadow-2: 0 8px 24px rgba(0, 0, 0, 0.28);
+
+  /* Anim */
+  --ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Colores (por defecto: dark suave, sin blanco agresivo) */
+  --bg: #0b0f17;
+  --bg2: #0e1524;
+  --card: #121b2e;
+  --card2: #0f172a;
+  --text: #e7ecff;
+  --muted: #aeb8df;
+  --line: rgba(255, 255, 255, 0.1);
+
+  /* Brand (Nexia vibe: violeta + cyan) */
+  --a1: #8a5cff;
+  --a2: #4dd7ff;
+  --a3: #2bffb4;
+
+  /* CTA */
+  --cta: #8a5cff;
+  --cta2: #4dd7ff;
+
+  color-scheme: dark;
+}
+
+[data-theme="dusk"] {
+  --bg: #0b0f17;
+  --bg2: #0e1524;
+  --card: #121b2e;
+  --card2: #0f172a;
+  --text: #e7ecff;
+  --muted: #aeb8df;
+  --line: rgba(255, 255, 255, 0.1);
+
+  --a1: #8a5cff;
+  --a2: #4dd7ff;
+  --a3: #2bffb4;
+
+  --cta: #8a5cff;
+  --cta2: #4dd7ff;
+
+  color-scheme: dark;
+}
+
+[data-theme="night"] {
+  --bg: #070a12;
+  --bg2: #0a0f1d;
+  --card: #0f1526;
+  --card2: #0b1222;
+  --text: #eef2ff;
+  --muted: #b2bce8;
+  --line: rgba(255, 255, 255, 0.1);
+
+  --a1: #a16bff;
+  --a2: #59dfff;
+  --a3: #35ffbf;
+
+  --cta: #a16bff;
+  --cta2: #59dfff;
+
+  color-scheme: dark;
+}

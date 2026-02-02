@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es" data-theme="dusk">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nexia | Acceso</title>
+
+  <link rel="stylesheet" href="./src/css/tokens.css" />
+  <link rel="stylesheet" href="./src/css/base.css" />
+  <link rel="stylesheet" href="./src/css/components.css" />
+  <link rel="stylesheet" href="./src/css/auth.css" />
+</head>
+
+<body>
+  <header class="nav">
+    <div class="container navInner">
+      <a class="brand" href="./index.html" aria-label="Nexia home">
+        <img src="./assets/img/icono.png" alt="Nexia logo" class="brandLogo" />
+        <span>
+          <div class="brandName">NEXIA</div>
+          <div class="brandTag">Design suite</div>
+        </span>
+      </a>
+
+      <div class="spacer"></div>
+
+      <div class="pill">
+        <select id="langSel" class="btn btnSmall btnGhost" aria-label="Language">
+          <option value="es">ES</option>
+          <option value="en">EN</option>
+        </select>
+
+        <button id="btnTheme" class="btn btnSmall btnGhost" type="button" aria-label="Theme toggle">
+          <span>☾</span> <span id="themeLabel">Dusk</span>
+        </button>
+      </div>
+
+      <a class="btn btnSmall btnGhost" href="./index.html">← Volver</a>
+    </div>
+  </header>
+
+  <main class="container authWrap">
+    <section class="card authCard">
+      <aside class="authSide">
+        <div class="media">
+          <div class="mediaImg"
+            style="background-image:url('https://i.pinimg.com/1200x/62/6f/fc/626ffcf54549e2992719d515ece6dc19.jpg');">
+          </div>
+        </div>
+        <p class="helper" style="margin:12px 2px 0;">
+          Tip: por ahora guardamos usuarios en <b>localStorage</b>. Luego lo migramos a backend real sin romper la UI.
+        </p>
+      </aside>
+
+      <div class="authMain">
+        <h2 style="margin:0 0 10px" data-i18n="auth_title">Accede a tu cuenta</h2>
+
+        <div class="tabs">
+          <button class="tab isActive" id="tab-login" type="button" data-i18n="tab_login">Entrar</button>
+          <button class="tab" id="tab-register" type="button" data-i18n="tab_register">Crear cuenta</button>
+        </div>
+
+        <form id="formLogin" class="form">
+          <div class="field">
+            <div class="label" data-i18n="email">Correo</div>
+            <input id="loginEmail" class="input" type="email" autocomplete="email" data-i18n-placeholder="email"
+              placeholder="Correo" />
+          </div>
+          <div class="field">
+            <div class="label" data-i18n="pass">Contraseña</div>
+            <input id="loginPass" class="input" type="password" autocomplete="current-password"
+              data-i18n-placeholder="pass" placeholder="Contraseña" />
+          </div>
+          <button class="btn btnPrimary" type="submit" data-i18n="do_login">Iniciar sesión</button>
+        </form>
+
+        <form id="formRegister" class="form" style="display:none;">
+          <div class="field">
+            <div class="label" data-i18n="name">Nombre</div>
+            <input id="regName" class="input" type="text" autocomplete="name" data-i18n-placeholder="name"
+              placeholder="Nombre" />
+          </div>
+          <div class="field">
+            <div class="label" data-i18n="email">Correo</div>
+            <input id="regEmail" class="input" type="email" autocomplete="email" data-i18n-placeholder="email"
+              placeholder="Correo" />
+          </div>
+          <div class="field">
+            <div class="label" data-i18n="pass">Contraseña</div>
+            <input id="regPass" class="input" type="password" minlength="6" autocomplete="new-password"
+              data-i18n-placeholder="pass" placeholder="Contraseña" />
+            <div class="helper" data-i18n="terms">Al crear tu cuenta aceptas los términos y la privacidad.</div>
+          </div>
+          <button class="btn btnPrimary" type="submit" data-i18n="do_register">Registrarme</button>
+        </form>
+
+        <div id="toast" class="toast"></div>
+      </div>
+    </section>
+  </main>
+
+  <script type="module" src="./src/js/login.js"></script>
+</body>
+
+</html>

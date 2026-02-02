@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nexia | Iniciar sesión</title>
+
+  <link rel="stylesheet" href="../css/tokens.css" />
+  <link rel="stylesheet" href="../css/base.css" />
+  <link rel="stylesheet" href="../css/auth.css" />
+</head>
+
+<body>
+  <main class="container authWrap">
+    <a class="brand" href="../index.html">
+      <span class="brandMark" aria-hidden="true"></span>
+      <span>Nexia</span>
+    </a>
+
+    <section class="card authCard">
+      <h1 class="authTitle">Iniciar sesión</h1>
+      <p class="p">Sesión local por ahora (prototipo).</p>
+
+      <form class="form" id="loginForm">
+        <label class="label">
+          Correo
+          <input class="input" type="email" id="email" required placeholder="lau@nexia.com" />
+        </label>
+
+        <label class="label">
+          Contraseña
+          <input class="input" type="password" id="password" required placeholder="••••••••" />
+        </label>
+
+        <button class="btn btnPrimary" type="submit">Entrar</button>
+        <p id="msg" class="small"></p>
+
+        <p class="small">
+          ¿Aún no tienes cuenta? (Luego hacemos registro)
+        </p>
+      </form>
+    </section>
+  </main>
+
+  <script src="../js/auth.js"></script>
+</body>
+
+</html>
