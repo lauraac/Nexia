@@ -140,3 +140,84 @@
 .toast.err {
   border-color: rgba(255, 90, 120, 0.35);
 }
+
+/* =========================================
+   MOBILE: idioma + tema minimal (login)
+   ========================================= */
+@media (max-width: 520px) {
+  /* Nav más compacta */
+  .navInner {
+    gap: 10px;
+  }
+
+  /* Marca más corta */
+  .brandLogo {
+    width: 34px;
+    height: 34px;
+  }
+  .brandTag {
+    display: none;
+  }
+
+  /* Contenedor idioma/tema sin bloque pesado */
+  .pill {
+    background: transparent;
+    border: none;
+    padding: 0;
+    gap: 6px;
+  }
+
+  /* Select idioma como chip */
+  #langSel {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    padding: 8px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  /* Botón tema como chip, sin texto */
+  #btnTheme {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    padding: 8px 10px;
+    border-radius: 999px;
+    min-width: auto;
+  }
+
+  /* Quita “Dusk” en móvil */
+  #btnTheme span:last-child {
+    display: none;
+  }
+
+  /* Ajusta icono luna */
+  #btnTheme span:first-child {
+    font-size: 14px;
+    opacity: 0.9;
+  }
+
+  /* Botón volver más compacto (si lo sientes grande) */
+  .navInner > a.btnSmall {
+    padding: 10px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 520px) {
+  .authCard {
+    padding: 14px;
+  }
+
+  /* Oculta el panel izquierdo (imagen) en móvil para que el form sea protagonista */
+  .authSide {
+    display: none;
+  }
+
+  /* Botón submit ancho completo */
+  .authMain .btnPrimary {
+    width: 100%;
+    justify-content: center;
+  }
+}
