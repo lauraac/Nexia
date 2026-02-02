@@ -190,4 +190,41 @@
     inset: 14px; /* menos margen interno */
     padding: 14px;
   }
+  /* Contenedor de idioma + tema */
+  .pill {
+    background: transparent;
+    border: none;
+    padding: 0;
+    gap: 6px;
+  }
+
+  /* Select idioma */
+  #langSel {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    padding: 8px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    color: var(--text);
+  }
+
+  /* Botón de tema */
+  #btnTheme {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid var(--line);
+    padding: 8px 10px;
+    border-radius: 999px;
+    min-width: auto;
+  }
+
+  /* Quita texto "Dusk" en móvil */
+  #btnTheme span:last-child {
+    display: none;
+  }
+
+  /* Icono de luna más limpio */
+  #btnTheme span:first-child {
+    font-size: 14px;
+    opacity: 0.9;
+  }
 }
