@@ -499,3 +499,58 @@ document.addEventListener("DOMContentLoaded", () => {
     renderCats();
   });
 });
+
+// ==============================
+// Left Panel (tipo Canva)
+// ==============================
+const leftPanel = document.getElementById("leftPanel");
+const leftPanelBackdrop = document.getElementById("leftPanelBackdrop");
+const closeLeftPanel = document.getElementById("closeLeftPanel");
+
+// Abre con el botón + (Crear)
+const btnNew = document.getElementById("btnNew");
+const btnMenu = document.getElementById("btnMenu");
+
+btnMenu?.addEventListener("click", () => {
+  if (leftPanel.classList.contains("show")) hideLeftPanel();
+  else openLeftPanel();
+});
+
+function openLeftPanel() {
+  leftPanel.classList.add("show");
+  leftPanel.setAttribute("aria-hidden", "false");
+}
+
+function hideLeftPanel() {
+  leftPanel.classList.remove("show");
+  leftPanel.setAttribute("aria-hidden", "true");
+}
+
+btnNew?.addEventListener("click", () => {
+  // si está abierto, lo cierra; si está cerrado, abre
+  if (leftPanel.classList.contains("show")) hideLeftPanel();
+  else openLeftPanel();
+});
+
+leftPanelBackdrop?.addEventListener("click", hideLeftPanel);
+closeLeftPanel?.addEventListener("click", hideLeftPanel);
+
+// ESC para cerrar
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape" && leftPanel.classList.contains("show"))
+    hideLeftPanel();
+});
+
+// Click en opciones del panel (por ahora demo)
+document.querySelectorAll("[data-panel-route]").forEach((btn) => {
+  btn.addEventListener("click", () => {
+    // marca activo
+    document
+      .querySelectorAll("[data-panel-route]")
+      .forEach((x) => x.classList.remove("isActive"));
+    btn.classList.add("isActive");
+
+    // aquí luego conectamos rutas reales (plantillas, fotos, etc.)
+    hideLeftPanel();
+  });
+});

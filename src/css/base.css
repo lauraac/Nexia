@@ -106,3 +106,33 @@ img {
   background: rgba(0, 0, 0, 0.25);
   color: var(--muted);
 }
+
+/* ===============================
+   BRAND / LOGO (GLOBAL)
+================================ */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.brandLogo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
+
+.brandName {
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.brandTag {
+  font-size: 11px;
+  opacity: 0.6;
+  line-height: 1;
+}

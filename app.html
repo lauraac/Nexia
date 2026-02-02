@@ -15,6 +15,12 @@
   <!-- LEFT SIDEBAR -->
   <aside class="sb" aria-label="Sidebar">
     <div class="sb__top">
+      <button class="sb__iconBtn sb__menuBtn" id="btnMenu" title="Menú" aria-label="Menú">
+        <!-- icono tipo “panel/menú” -->
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M5 7h14M5 12h14M5 17h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+        </svg>
+      </button>
       <button class="sb__iconBtn" id="btnNew" title="Crear" aria-label="Crear">
         <!-- plus -->
         <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -110,6 +116,49 @@
       </div>
     </div>
   </header>
+  <!-- LEFT PANEL (tipo Canva: Mi plan / Plantillas / Fotos...) -->
+  <div class="panel" id="leftPanel" aria-hidden="true">
+    <div class="panel__backdrop" id="leftPanelBackdrop"></div>
+
+    <aside class="panel__card" role="dialog" aria-label="Menú">
+      <div class="panel__head">
+        <button class="panel__close" id="closeLeftPanel" type="button" aria-label="Cerrar">✕</button>
+
+        <button class="panel__plan" type="button">
+          <span class="panel__crown">👑</span>
+          <span>Mi plan</span>
+        </button>
+      </div>
+
+      <nav class="panel__list" aria-label="Secciones">
+        <button class="panel__item isActive" type="button" data-panel-route="templates">
+          <span class="panel__i">▦</span><span>Plantillas</span>
+        </button>
+
+        <button class="panel__item" type="button" data-panel-route="photos">
+          <span class="panel__i">🖼️</span><span>Fotos</span>
+        </button>
+
+        <button class="panel__item" type="button" data-panel-route="elements">
+          <span class="panel__i">✦</span><span>Elementos gráficos</span>
+        </button>
+
+        <button class="panel__item" type="button" data-panel-route="creators">
+          <span class="panel__i">♡</span><span>Creators</span>
+        </button>
+
+        <button class="panel__item" type="button" data-panel-route="favorites">
+          <span class="panel__i">★</span><span>Contenido en Favoritos</span>
+        </button>
+      </nav>
+
+      <div class="panel__foot">
+        <button class="panel__trash" type="button">
+          <span class="panel__i">🗑️</span><span>Papelera</span>
+        </button>
+      </div>
+    </aside>
+  </div>
 
   <!-- MAIN CONTENT -->
   <main class="main">
