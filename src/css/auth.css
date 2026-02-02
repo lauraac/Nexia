@@ -204,20 +204,3 @@
     font-size: 13px;
   }
 }
-
-@media (max-width: 520px) {
-  .authCard {
-    padding: 14px;
-  }
-
-  /* Oculta el panel izquierdo (imagen) en móvil para que el form sea protagonista */
-  .authSide {
-    display: none;
-  }
-
-  /* Botón submit ancho completo */
-  .authMain .btnPrimary {
-    width: 100%;
-    justify-content: center;
-  }
-}
