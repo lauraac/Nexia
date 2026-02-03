@@ -1,0 +1,47 @@
+<section class="cmSize">
+  <header class="cmSize__head">
+    <h3 class="cmSize__title">Elegir el tamaño</h3>
+  </header>
+
+  <div class="cmSize__grid">
+    <div class="cmField">
+      <label class="cmField__label">Ancho</label>
+      <input id="cmSizeWidth" class="cmField__input" type="number" min="1" placeholder=" " />
+    </div>
+
+    <div class="cmField">
+      <label class="cmField__label">Alto</label>
+      <input id="cmSizeHeight" class="cmField__input" type="number" min="1" placeholder=" " />
+    </div>
+
+    <div class="cmField">
+      <label class="cmField__label">Unidades</label>
+      <select id="cmSizeUnit" class="cmField__select">
+        <option value="px" selected>px</option>
+        <option value="in">in</option>
+        <option value="mm">mm</option>
+        <option value="cm">cm</option>
+      </select>
+    </div>
+
+    <div class="cmField cmField--lock">
+      <label class="cmField__label">Relación</label>
+      <label class="cmLock">
+        <input id="cmLockRatio" type="checkbox" />
+        <span>Bloquear proporción</span>
+      </label>
+    </div>
+
+    <div class="cmField cmField--btn">
+      <button id="cmCreateNew" class="cmBtnCreate" type="button" disabled>
+        Crear diseño nuevo
+      </button>
+      <div class="cmHint">Ingresa ancho y alto para habilitar.</div>
+    </div>
+  </div>
+
+  <div class="cmSize__sugs">
+    <div class="cmSize__sugsTitle">Sugerencias</div>
+    <div id="cmSuggestions" class="cmSize__sugsGrid"></div>
+  </div>
+</section>

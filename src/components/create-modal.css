@@ -1,0 +1,230 @@
+/* src/components/create-modal.css */
+@import url("./create-modal/views/size/size.css");
+
+/* bloquea scroll cuando modal está abierto */
+.noScroll {
+  overflow: hidden;
+}
+
+.cmodal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+}
+.cmodal.show {
+  display: block;
+}
+
+.cmodal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(6px);
+}
+
+/* Panel grande tipo Canva */
+.cmodal__panel {
+  position: absolute;
+  left: calc(var(--sb-w, 76px) + 18px);
+  right: 18px;
+  top: 22px;
+  bottom: 22px;
+
+  border-radius: 22px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(14, 18, 30, 0.92);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 28px 90px rgba(0, 0, 0, 0.55);
+
+  display: grid;
+  grid-template-rows: auto 1fr;
+  overflow: hidden;
+}
+
+/* Header */
+.cmodal__head {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 16px;
+  align-items: center;
+
+  padding: 18px 18px 14px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.cmodal__titleRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 260px;
+}
+
+.cmodal__logo {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  object-fit: cover;
+  box-shadow: 0 12px 30px rgba(138, 92, 255, 0.25);
+}
+
+.cmodal__title {
+  margin: 0;
+  font-size: clamp(28px, 2.4vw, 44px);
+  letter-spacing: -0.6px;
+  color: rgba(235, 242, 255, 0.95);
+  font-weight: 900;
+}
+
+.cmodal__search {
+  height: 44px;
+  border-radius: 999px;
+  border: 1px solid rgba(138, 92, 255, 0.35);
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+}
+.cmodal__searchIco {
+  opacity: 0.85;
+}
+.cmodal__searchInput {
+  flex: 1;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: rgba(235, 242, 255, 0.92);
+  font-size: 14px;
+}
+.cmodal__searchInput::placeholder {
+  color: rgba(174, 184, 223, 0.7);
+}
+
+.cmodal__close {
+  width: 44px;
+  height: 44px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(235, 242, 255, 0.92);
+  cursor: pointer;
+}
+
+/* Body */
+.cmodal__body {
+  display: grid;
+  grid-template-columns: 270px 1fr;
+  min-height: 0; /* importante para scroll */
+}
+
+/* Left nav */
+.cmodal__left {
+  padding: 14px 10px;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  overflow: auto;
+}
+.cmodal__item {
+  width: 100%;
+  text-align: left;
+  padding: 12px 12px;
+  border-radius: 16px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: rgba(210, 220, 255, 0.78);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.cmodal__item:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(235, 242, 255, 0.92);
+}
+.cmodal__item.isActive {
+  background: rgba(138, 92, 255, 0.18);
+  border-color: rgba(138, 92, 255, 0.25);
+  color: rgba(235, 242, 255, 0.95);
+}
+.cmodal__sep {
+  height: 1px;
+  margin: 12px 10px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Right content */
+.cmodal__right {
+  padding: 16px 18px 18px;
+  overflow: auto;
+}
+.cmodal__sectionTitle {
+  margin: 12px 0 10px;
+  font-size: 20px;
+  font-weight: 900;
+  color: rgba(235, 242, 255, 0.92);
+}
+.cmodal__rowHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+}
+.cmodal__link {
+  border: 0;
+  background: transparent;
+  color: rgba(160, 190, 255, 0.9);
+  cursor: pointer;
+  font-weight: 800;
+}
+
+/* Scrollbars bonitos (opcional) */
+.cmodal__left::-webkit-scrollbar,
+.cmodal__right::-webkit-scrollbar {
+  width: 10px;
+}
+.cmodal__left::-webkit-scrollbar-thumb,
+.cmodal__right::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: 999px;
+}
+
+/* Responsive */
+@media (max-width: 920px) {
+  .cmodal__head {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "title close"
+      "search search";
+  }
+  .cmodal__titleRow {
+    grid-area: title;
+    min-width: 0;
+  }
+  .cmodal__search {
+    grid-area: search;
+  }
+  .cmodal__close {
+    grid-area: close;
+  }
+  .cmodal__body {
+    grid-template-columns: 240px 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .cmodal__panel {
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    bottom: 10px;
+  }
+  .cmodal__body {
+    grid-template-columns: 1fr; /* left arriba, contenido abajo */
+  }
+  .cmodal__left {
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    max-height: 220px;
+  }
+}

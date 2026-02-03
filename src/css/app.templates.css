@@ -266,7 +266,7 @@ body {
 }
 
 .search {
-  margin: 0 auto;
+  margin-bottom: 18px; /* prueba 16–24 */
   width: min(760px, 100%);
   display: flex;
   align-items: center;

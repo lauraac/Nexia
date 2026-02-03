@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="./src/css/tokens.css" />
   <link rel="stylesheet" href="./src/css/base.css" />
   <link rel="stylesheet" href="./src/css/app.templates.css" />
+  <link rel="stylesheet" href="./src/components/create-modal.css">
 </head>
 
 <body>
@@ -253,6 +254,18 @@
       <div class="sheet__grid" id="moreSheetGrid"></div>
     </div>
   </div>
+  <!-- Load Create Modal -->
+  <div id="createModalMount"></div>
+
+  <script type="module">
+    import { mountCreateModal } from "./src/components/create-modal.js";
+
+    mountCreateModal({
+      mountId: "createModalMount",
+      openButtonId: "btnNew",
+    });
+  </script>
+
 
   <script type="module">
     import { requireAuth, logout } from "./src/js/auth.js";

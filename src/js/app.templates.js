@@ -346,10 +346,6 @@ function initSidebar() {
       // templates/home se quedan aquí
     });
   });
-
-  $("#btnNew").addEventListener("click", () => {
-    alert("Crear (después aquí abrirás selector de tamaños/plantillas)");
-  });
 }
 
 function initChips() {

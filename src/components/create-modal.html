@@ -1,0 +1,52 @@
+<!-- CREATE DESIGN MODAL -->
+<div class="cmodal" id="createModal" aria-hidden="true">
+  <div class="cmodal__backdrop" id="createBackdrop"></div>
+  <div class="cmodal__backdrop" data-close="1"></div>
+  <button class="cmodal__close" data-close="1" type="button" aria-label="Cerrar">✕</button>
+
+
+  <section class="cmodal__panel" role="dialog" aria-modal="true" aria-label="Crear un diseño">
+    <header class="cmodal__head">
+      <div class="cmodal__titleRow">
+        <img class="cmodal__logo" src="./assets/img/icono.png" alt="Nexia" />
+        <h2 class="cmodal__title">Crear un diseño</h2>
+      </div>
+
+      <div class="cmodal__search">
+        <span class="cmodal__searchIco" aria-hidden="true">🔍</span>
+        <input class="cmodal__searchInput" placeholder="¿Qué quieres diseñar?" />
+      </div>
+
+      <button class="cmodal__close" id="closeCreate" type="button" aria-label="Cerrar">✕</button>
+    </header>
+
+    <div class="cmodal__body">
+      <!-- LEFT -->
+      <aside class="cmodal__left" aria-label="Categorías">
+        <button class="cmodal__item isActive" data-view="for-you">✨ Para ti</button>
+        <button class="cmodal__item" data-view="presentations">🏆 Presentaciones</button>
+        <button class="cmodal__item" data-view="social">❤️ Redes sociales</button>
+        <button class="cmodal__item" data-view="photos">🖼️ Fotos</button>
+        <button class="cmodal__item" data-view="videos">🎬 Videos</button>
+        <button class="cmodal__item" data-view="print">🖨️ Imprimir</button>
+        <button class="cmodal__item" data-view="docs">📄 Nexia Docs</button>
+        <button class="cmodal__item" data-view="boards">🧠 Pizarrones</button>
+        <button class="cmodal__item" data-view="web">🌐 Web</button>
+
+        <div class="cmodal__sep"></div>
+
+        <button class="cmodal__item" data-view="size">↔️ Elegir tamaño</button>
+        <button class="cmodal__item" data-view="upload">☁️ Subir</button>
+        <button class="cmodal__item" data-view="more">⋯ Más</button>
+      </aside>
+
+
+      <!-- RIGHT -->
+      <div class="cmodal__right">
+        <!-- Aquí se montan las vistas dinámicas -->
+        <div id="cmodalViewMount"></div>
+      </div>
+
+    </div>
+  </section>
+</div>
