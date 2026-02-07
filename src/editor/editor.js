@@ -30,58 +30,6 @@ metaEl.textContent = `${project.width} × ${project.height} ${project.unit}`;
    3️⃣ Canvas
 ================================ */
 const canvasApi = initCanvas(project);
-// --- IMAGEN (Subir)
-const imgInput = document.getElementById("nxImgInput");
-imgInput?.addEventListener("change", async (e) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
-
-  const reader = new FileReader();
-  reader.onload = async () => {
-    await canvasApi.addImageFromDataUrl(String(reader.result));
-    imgInput.value = ""; // permite subir la misma imagen otra vez
-  };
-  reader.readAsDataURL(file);
-});
-
-// --- FONDO (color)
-const bgBtn = document.getElementById("nxBgBtn");
-const bgColor = document.getElementById("nxBgColor");
-
-bgBtn?.addEventListener("click", () => bgColor?.click());
-bgColor?.addEventListener("input", (e) => {
-  canvasApi.setBackground(e.target.value);
-});
-
-// --- ZOOM
-let zoom = 1;
-const zoomRange = document.getElementById("zoomRange");
-const zoomPct = document.getElementById("zoomPct");
-const zoomIn = document.getElementById("zoomIn");
-const zoomOut = document.getElementById("zoomOut");
-
-function setZoom(z) {
-  zoom = Math.max(0.1, Math.min(2, z));
-  canvasApi.setZoomScale(zoom);
-  if (zoomRange) zoomRange.value = String(Math.round(zoom * 100));
-  if (zoomPct) zoomPct.textContent = `${Math.round(zoom * 100)}%`;
-}
-
-zoomRange?.addEventListener("input", () => {
-  setZoom(Number(zoomRange.value) / 100);
-});
-zoomIn?.addEventListener("click", () => setZoom(zoom + 0.1));
-zoomOut?.addEventListener("click", () => setZoom(zoom - 0.1));
-
-setZoom(1);
-
-// --- PÁGINAS (agregar)
-const addPageBtn =
-  document.getElementById("nxAddPage") || document.querySelector(".nxPageAdd");
-addPageBtn?.addEventListener("click", () => {
-  canvasApi.addPage();
-  // (luego hacemos render real de thumbnails abajo)
-});
 
 /* ===============================
    4️⃣ Zoom visual (slider)

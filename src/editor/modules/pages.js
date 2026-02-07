@@ -1,84 +1,75 @@
 // src/editor/modules/pages.js
 export function initPages({ project, canvasApi, history, saveProject }) {
-  const addBtn = document.getElementById("nxAddPage");
-  const wrap = document.querySelector(".nxPages");
-  const { layer, select } = canvasApi;
+  const pagesWrap = document.querySelector(".nxPages");
+  const addBtnA = document.querySelector(".nxPages .nxPageAdd"); // el + junto a thumbnails
+  const addBtnB = document.getElementById("nxAddPage"); // el + en el zoom
 
-  function renderBar() {
-    // deja el + al final
-    wrap.querySelectorAll(".nxPageThumb").forEach((n) => n.remove());
+  if (!pagesWrap) return;
+
+  function persist() {
+    try {
+      saveProject?.();
+    } catch {}
+  }
+
+  function render() {
+    // preserva botones + existentes
+    const btnThumbPlus = addBtnA;
+    pagesWrap.innerHTML = "";
 
     project.doc.pages.forEach((p, idx) => {
       const el = document.createElement("div");
       el.className =
-        "nxPageThumb" + (idx === project.doc.activePage ? " isActive" : "");
-      el.innerHTML = `<div class="nxPageThumb__mini"></div><span>${idx + 1}</span>`;
-      el.title = "Click para cambiar. Click derecho para eliminar.";
+        "nxPageThumb" + (p.id === project.doc.activePageId ? " isActive" : "");
+      el.dataset.pageId = p.id;
 
-      el.addEventListener("click", () => {
-        project.doc.activePage = idx;
-        loadPage();
-        renderBar();
-        saveProject();
+      el.innerHTML = `
+        <button class="nxPageThumb__hit" type="button" aria-label="Ir a página ${idx + 1}">
+          <div class="nxPageThumb__mini"></div>
+          <span>${idx + 1}</span>
+        </button>
+        <button class="nxPageThumb__del" type="button" title="Eliminar">✕</button>
+      `;
+
+      // ir a página
+      el.querySelector(".nxPageThumb__hit").addEventListener("click", () => {
+        canvasApi.setActivePage(p.id);
+        render();
+        persist();
       });
 
-      // eliminar con click derecho
-      el.addEventListener("contextmenu", (e) => {
-        e.preventDefault();
-        if (project.doc.pages.length === 1) return;
+      // eliminar página
+      el.querySelector(".nxPageThumb__del").addEventListener("click", (ev) => {
+        ev.stopPropagation();
 
-        history.push(
-          () => {
-            project.doc.pages.splice(idx, 1);
-            if (project.doc.activePage >= project.doc.pages.length) {
-              project.doc.activePage = project.doc.pages.length - 1;
-            }
-            loadPage();
-            renderBar();
-            saveProject();
-          },
-          () => {
-            // undo simple: no lo reconstruyo completo aquí, si quieres lo hacemos “perfecto” después
-            alert(
-              "Undo de delete página: lo dejamos para la siguiente mejora 🙏",
-            );
-          },
-        );
+        // no borrar si solo queda 1
+        const ok = canvasApi.deletePage(p.id);
+        if (!ok) return;
 
-        history.doLast();
+        // historia (opcional) - si ya la usas, luego lo conectamos mejor
+        history?.push?.("deletePage");
+
+        render();
+        persist();
       });
 
-      wrap.insertBefore(el, addBtn);
+      pagesWrap.appendChild(el);
     });
+
+    // vuelve a poner el + al final
+    if (btnThumbPlus) pagesWrap.appendChild(btnThumbPlus);
   }
 
-  function loadPage() {
-    select(null);
-    layer.destroyChildren(); // borra todo
-    layer.draw();
-    // aquí luego renderizas elementos guardados (image/text/shapes)
+  function addPage() {
+    const id = canvasApi.addPage();
+    history?.push?.("addPage");
+    render();
+    persist();
+    return id;
   }
 
-  addBtn?.addEventListener("click", () => {
-    history.push(
-      () => {
-        project.doc.pages.push({ id: cryptoId(), elements: [], bg: "#ffffff" });
-        project.doc.activePage = project.doc.pages.length - 1;
-        loadPage();
-        renderBar();
-        saveProject();
-      },
-      () => {},
-    );
-    history.doLast();
-  });
+  addBtnA?.addEventListener("click", addPage);
+  addBtnB?.addEventListener("click", addPage);
 
-  // init
-  if (project.doc.activePage == null) project.doc.activePage = 0;
-  renderBar();
-  loadPage();
-}
-
-function cryptoId() {
-  return "p_" + Math.random().toString(16).slice(2) + "_" + Date.now();
+  render();
 }
