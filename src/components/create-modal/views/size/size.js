@@ -1,198 +1,240 @@
 // src/components/create-modal/views/size/size.js
+// Vista "Elegir tamaño": valida, habilita botón y convierte unidades automáticamente.
 
-const LIMITS = {
-  px: { min: 40, max: 8000 },
-  in: { min: 0.2, max: 100 }, // aprox 40px..8000px a 96dpi => 0.42..83.33, dejamos un margen
-  mm: { min: 5, max: 2000 }, // aproximado
-  cm: { min: 0.5, max: 200 }, // aproximado
-};
+export function initView(mount) {
+  const $ = (sel) => mount.querySelector(sel);
 
-// Sugerencias simples (puedes crecer esto después)
-const SUGGESTIONS = [
-  { title: "Post para LinkedIn", w: 1200, h: 1200, unit: "px" },
-  { title: "Historia (9:16)", w: 1080, h: 1920, unit: "px" },
-  { title: "A4", w: 21, h: 29.7, unit: "cm" },
-];
+  const wEl = $("#cmSizeWidth");
+  const hEl = $("#cmSizeHeight");
+  const unitEl = $("#cmSizeUnit");
+  const lockEl = $("#cmLockRatio");
+  const btn = $("#cmCreateNew");
+  const hintEl = $(".cmHint");
 
-function clampNumber(n) {
-  const x = Number(n);
-  return Number.isFinite(x) ? x : NaN;
-}
+  if (!wEl || !hEl || !unitEl || !btn) {
+    console.warn("[size.js] Faltan elementos. Revisa IDs en size.html");
+    return;
+  }
 
-function getLimits(unit) {
-  return LIMITS[unit] || LIMITS.px;
-}
+  // Límites reales en pulgadas (como tu mensaje)
+  const LIMITS_IN = { min: 0.417, max: 83.328 };
 
-function formatLimitText(unit) {
-  const { min, max } = getLimits(unit);
-  const u = unit;
-  return `El tamaño no puede ser menor a ${min} ${u} ni mayor a ${max} ${u}.`;
-}
+  const DPI = 96; // px por inch (web estándar)
+  const MM_PER_IN = 25.4;
+  const CM_PER_IN = 2.54;
 
-function isInRange(val, unit) {
-  const { min, max } = getLimits(unit);
-  return val >= min && val <= max;
-}
+  const getUnit = () => unitEl.value || "px";
 
-function setFieldState(el, ok) {
-  if (!el) return;
-  el.classList.toggle("isInvalid", !ok);
-}
-
-function upsertError(el, msg) {
-  // usa un div pequeño debajo del grid (o debajo de inputs)
-  if (!el) return;
-  el.textContent = msg || "";
-  el.style.display = msg ? "block" : "none";
-}
-
-function saveDraftSize({ w, h, unit, lock }) {
-  const payload = { w, h, unit, lock: !!lock, ts: Date.now() };
-  localStorage.setItem("nexia:newDesign:size", JSON.stringify(payload));
-}
-
-function createProject({ w, h, unit }) {
-  const id = "nx_" + Math.random().toString(16).slice(2) + "_" + Date.now();
-  const project = {
-    id,
-    title: "Diseño sin título",
-    width: w,
-    height: h,
-    unit,
-    createdAt: new Date().toISOString(),
-    // aquí luego guardas layers, elements, etc.
-    doc: {
-      pages: [{ id: "p1", elements: [] }],
-    },
+  const toInches = (value, unit) => {
+    if (!Number.isFinite(value)) return NaN;
+    switch (unit) {
+      case "in":
+        return value;
+      case "px":
+        return value / DPI;
+      case "mm":
+        return value / MM_PER_IN;
+      case "cm":
+        return value / CM_PER_IN;
+      default:
+        return value;
+    }
   };
 
-  const key = "nexia:projects";
-  const list = JSON.parse(localStorage.getItem(key) || "[]");
-  list.unshift(project);
-  localStorage.setItem(key, JSON.stringify(list));
-
-  // también guardamos el actual
-  localStorage.setItem("nexia:currentProjectId", id);
-
-  return id;
-}
-
-export function initSizeView(rootEl) {
-  // rootEl es el contenedor del HTML ya montado (size.html)
-  const widthEl = rootEl.querySelector("#cmSizeWidth");
-  const heightEl = rootEl.querySelector("#cmSizeHeight");
-  const unitEl = rootEl.querySelector("#cmSizeUnit");
-  const btnEl = rootEl.querySelector("#cmCreateNew");
-  const lockEl = rootEl.querySelector("#cmLockRatio"); // si lo agregas en HTML
-  const hintEl = rootEl.querySelector(".cmHint");
-  const sugWrap = rootEl.querySelector("#cmSuggestions"); // si lo agregas
-
-  // si no existe hint, no pasa nada
-  if (hintEl) hintEl.textContent = "Ingresa ancho y alto para habilitar.";
-
-  function paintSuggestions() {
-    if (!sugWrap) return;
-    sugWrap.innerHTML = "";
-
-    SUGGESTIONS.forEach((s) => {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "cmSug";
-      btn.innerHTML = `
-        <span class="cmSug__icon">🖼️</span>
-        <span class="cmSug__txt">
-          <span class="cmSug__title">${s.title}</span>
-          <span class="cmSug__meta">${s.w} × ${s.h} ${s.unit}</span>
-        </span>
-      `;
-      btn.addEventListener("click", () => {
-        unitEl.value = s.unit;
-        widthEl.value = s.w;
-        heightEl.value = s.h;
-        validate();
-      });
-      sugWrap.appendChild(btn);
-    });
-  }
-
-  function validate() {
-    const unit = unitEl.value || "px";
-    const w = clampNumber(widthEl.value);
-    const h = clampNumber(heightEl.value);
-
-    const wOk = Number.isFinite(w) && isInRange(w, unit);
-    const hOk = Number.isFinite(h) && isInRange(h, unit);
-
-    setFieldState(widthEl, wOk || !widthEl.value);
-    setFieldState(heightEl, hOk || !heightEl.value);
-
-    const allFilled = !!widthEl.value && !!heightEl.value;
-    const allOk = allFilled && wOk && hOk;
-
-    if (btnEl) btnEl.disabled = !allOk;
-
-    if (hintEl) {
-      if (!allFilled) {
-        hintEl.textContent = "Ingresa ancho y alto para habilitar.";
-        hintEl.classList.remove("isError");
-      } else if (!allOk) {
-        hintEl.textContent = formatLimitText(unit);
-        hintEl.classList.add("isError");
-      } else {
-        hintEl.textContent = "";
-        hintEl.classList.remove("isError");
-      }
+  const fromInches = (inches, unit) => {
+    if (!Number.isFinite(inches)) return NaN;
+    switch (unit) {
+      case "in":
+        return inches;
+      case "px":
+        return inches * DPI;
+      case "mm":
+        return inches * MM_PER_IN;
+      case "cm":
+        return inches * CM_PER_IN;
+      default:
+        return inches;
     }
+  };
 
-    saveDraftSize({ w, h, unit, lock: lockEl?.checked });
+  const clamp = (n, min, max) => Math.min(max, Math.max(min, n));
 
-    return { allOk, w, h, unit };
-  }
-
-  // (Opcional) lock ratio simple
-  function syncRatio(changed) {
-    if (!lockEl?.checked) return;
-    const unit = unitEl.value || "px";
-    const w = clampNumber(widthEl.value);
-    const h = clampNumber(heightEl.value);
-    if (!Number.isFinite(w) || !Number.isFinite(h) || w <= 0 || h <= 0) return;
-
-    // ratio actual
-    const r = w / h;
-
-    if (changed === "w") {
-      const newH = Math.round((w / r) * 1000) / 1000;
-      heightEl.value = newH;
-    } else if (changed === "h") {
-      const newW = Math.round(h * r * 1000) / 1000;
-      widthEl.value = newW;
-    }
-    // valida de nuevo
-    validate();
-  }
-
-  widthEl?.addEventListener("input", () => {
-    validate();
-    // si quieres lock real, necesitarías guardar ratio inicial.
-    // aquí lo dejamos simple; si te molesta lo quitamos.
-  });
-  heightEl?.addEventListener("input", () => validate());
-  unitEl?.addEventListener("change", () => validate());
-
-  btnEl?.addEventListener("click", () => {
-    const { allOk, w, h, unit } = validate();
-    if (!allOk) return;
-
-    const id = createProject({ w, h, unit });
-
-    // cierra el modal antes de ir
-    document.getElementById("createModal")?.classList.remove("show");
-    document.body.classList.remove("noScroll");
-
-    // navega al editor
-    window.location.href = `./src/editor/editor.html?designId=${encodeURIComponent(id)}`;
+  const unitMinMax = (unit) => ({
+    min: fromInches(LIMITS_IN.min, unit),
+    max: fromInches(LIMITS_IN.max, unit),
   });
 
-  paintSuggestions();
-  validate();
+  const formatForUnit = (value, unit) => {
+    if (!Number.isFinite(value)) return "";
+    // px entero, otras con 3 decimales máximo
+    if (unit === "px") return String(Math.round(value));
+    return String(Math.round(value * 1000) / 1000);
+  };
+
+  const parseNum = (el) => {
+    const raw = String(el.value ?? "").trim();
+    if (!raw) return NaN;
+    // por si acaso (aunque type=number)
+    const n = Number(raw.replace(/\s/g, "").replace(/,/g, ""));
+    return Number.isFinite(n) ? n : NaN;
+  };
+
+  function setHint(text, isError) {
+    if (!hintEl) return;
+    hintEl.textContent = text || "";
+    hintEl.style.color = isError ? "#ff5a6b" : "";
+  }
+
+  function validateAndToggle() {
+    const unit = getUnit();
+    const { min, max } = unitMinMax(unit);
+
+    const w = parseNum(wEl);
+    const h = parseNum(hEl);
+
+    const has = Number.isFinite(w) && Number.isFinite(h);
+    const ok = has && w >= min && w <= max && h >= min && h <= max;
+
+    btn.disabled = !ok;
+
+    if (!has) {
+      setHint("Ingresa ancho y alto para habilitar.", false);
+    } else if (!ok) {
+      setHint(
+        `El tamaño no puede ser menor a ${formatForUnit(min, unit)} ${unit} ni mayor a ${formatForUnit(max, unit)} ${unit}.`,
+        true,
+      );
+    } else {
+      setHint("", false);
+    }
+
+    return ok;
+  }
+
+  // --- Convertir automáticamente al cambiar unidad
+  let lastUnit = getUnit();
+  let baseRatio = null; // ratio original cuando se activa lock
+
+  function captureRatioIfNeeded() {
+    const w = parseNum(wEl);
+    const h = parseNum(hEl);
+    if (!Number.isFinite(w) || !Number.isFinite(h) || w === 0) return;
+    baseRatio = h / w;
+  }
+
+  lockEl?.addEventListener("change", () => {
+    if (lockEl.checked) captureRatioIfNeeded();
+    validateAndToggle();
+  });
+
+  function applyLockFromWidth() {
+    if (!lockEl || !lockEl.checked) return;
+    if (!baseRatio || !Number.isFinite(baseRatio)) captureRatioIfNeeded();
+
+    const unit = getUnit();
+    const w = parseNum(wEl);
+    if (!Number.isFinite(w) || !Number.isFinite(baseRatio)) return;
+
+    hEl.value = formatForUnit(w * baseRatio, unit);
+  }
+
+  function applyLockFromHeight() {
+    if (!lockEl || !lockEl.checked) return;
+    if (!baseRatio || !Number.isFinite(baseRatio)) captureRatioIfNeeded();
+
+    const unit = getUnit();
+    const h = parseNum(hEl);
+    if (!Number.isFinite(h) || !Number.isFinite(baseRatio) || baseRatio === 0)
+      return;
+
+    wEl.value = formatForUnit(h / baseRatio, unit);
+  }
+
+  function convertOnUnitChange() {
+    const newUnit = getUnit();
+    const oldUnit = lastUnit;
+    if (newUnit === oldUnit) return;
+
+    const wOld = parseNum(wEl);
+    const hOld = parseNum(hEl);
+
+    // si no hay números, solo cambia unidad y valida
+    if (!Number.isFinite(wOld) || !Number.isFinite(hOld)) {
+      lastUnit = newUnit;
+      validateAndToggle();
+      return;
+    }
+
+    // convertir old -> inches -> new
+    const wIn = toInches(wOld, oldUnit);
+    const hIn = toInches(hOld, oldUnit);
+
+    let wNew = fromInches(wIn, newUnit);
+    let hNew = fromInches(hIn, newUnit);
+
+    // clamp a límites permitidos en unidad nueva
+    const { min, max } = unitMinMax(newUnit);
+    wNew = clamp(wNew, min, max);
+    hNew = clamp(hNew, min, max);
+
+    wEl.value = formatForUnit(wNew, newUnit);
+
+    if (lockEl?.checked) {
+      // conserva proporción
+      if (!baseRatio || !Number.isFinite(baseRatio))
+        baseRatio = hOld / (wOld || 1);
+      hEl.value = formatForUnit(wNew * baseRatio, newUnit);
+    } else {
+      hEl.value = formatForUnit(hNew, newUnit);
+    }
+
+    lastUnit = newUnit;
+    validateAndToggle();
+  }
+
+  // Eventos de inputs
+  wEl.addEventListener("input", () => {
+    if (lockEl?.checked) applyLockFromWidth();
+    validateAndToggle();
+  });
+
+  hEl.addEventListener("input", () => {
+    if (lockEl?.checked) applyLockFromHeight();
+    validateAndToggle();
+  });
+
+  unitEl.addEventListener("change", convertOnUnitChange);
+
+  // Crear diseño
+  btn.addEventListener("click", (e) => {
+    e.preventDefault();
+    if (!validateAndToggle()) return;
+
+    const unit = getUnit();
+    const w = parseNum(wEl);
+    const h = parseNum(hEl);
+
+    const wIn = toInches(w, unit);
+    const hIn = toInches(h, unit);
+
+    const widthPx = Math.round(fromInches(wIn, "px"));
+    const heightPx = Math.round(fromInches(hIn, "px"));
+
+    // se lo mandamos al flujo que ya tienes (create-modal.js / app.js)
+    mount.dispatchEvent(
+      new CustomEvent("nexia:createDesign", {
+        bubbles: true,
+        detail: {
+          width: w,
+          height: h,
+          unit,
+          widthPx,
+          heightPx,
+        },
+      }),
+    );
+  });
+
+  // Inicial
+  validateAndToggle();
 }

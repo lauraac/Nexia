@@ -1,9 +1,6 @@
 <!-- CREATE DESIGN MODAL -->
 <div class="cmodal" id="createModal" aria-hidden="true">
-  <div class="cmodal__backdrop" id="createBackdrop"></div>
-  <div class="cmodal__backdrop" data-close="1"></div>
-  <button class="cmodal__close" data-close="1" type="button" aria-label="Cerrar">✕</button>
-
+  <div class="cmodal__backdrop" id="createBackdrop" data-close="1"></div>
 
   <section class="cmodal__panel" role="dialog" aria-modal="true" aria-label="Crear un diseño">
     <header class="cmodal__head">
@@ -17,7 +14,7 @@
         <input class="cmodal__searchInput" placeholder="¿Qué quieres diseñar?" />
       </div>
 
-      <button class="cmodal__close" id="closeCreate" type="button" aria-label="Cerrar">✕</button>
+      <button class="cmodal__close" data-close="1" type="button" aria-label="Cerrar">✕</button>
     </header>
 
     <div class="cmodal__body">
@@ -40,13 +37,10 @@
         <button class="cmodal__item" data-view="more">⋯ Más</button>
       </aside>
 
-
       <!-- RIGHT -->
       <div class="cmodal__right">
-        <!-- Aquí se montan las vistas dinámicas -->
         <div id="cmodalViewMount"></div>
       </div>
-
     </div>
   </section>
 </div>

@@ -499,12 +499,14 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==============================
 // Left Panel (tipo Canva)
 // ==============================
+// ==============================
+// Left Panel (tipo Canva)  ✅ SOLO CON ☰
+// ==============================
 const leftPanel = document.getElementById("leftPanel");
 const leftPanelBackdrop = document.getElementById("leftPanelBackdrop");
 const closeLeftPanel = document.getElementById("closeLeftPanel");
 
-// Abre con el botón + (Crear)
-const btnNew = document.getElementById("btnNew");
+const btnNew = document.getElementById("btnNew"); // +  (NO se usa aquí)
 const btnMenu = document.getElementById("btnMenu");
 
 btnMenu?.addEventListener("click", () => {
@@ -513,40 +515,40 @@ btnMenu?.addEventListener("click", () => {
 });
 
 function openLeftPanel() {
-  leftPanel.classList.add("show");
-  leftPanel.setAttribute("aria-hidden", "false");
+  leftPanel?.classList.add("show");
+  leftPanel?.setAttribute("aria-hidden", "false");
 }
 
 function hideLeftPanel() {
-  leftPanel.classList.remove("show");
-  leftPanel.setAttribute("aria-hidden", "true");
+  leftPanel?.classList.remove("show");
+  leftPanel?.setAttribute("aria-hidden", "true");
 }
 
-btnNew?.addEventListener("click", () => {
-  // si está abierto, lo cierra; si está cerrado, abre
-  if (leftPanel.classList.contains("show")) hideLeftPanel();
+// ✅ SOLO el ☰ abre/cierra el panel
+btnMenu?.addEventListener("click", (e) => {
+  e.preventDefault();
+  if (leftPanel?.classList.contains("show")) hideLeftPanel();
   else openLeftPanel();
 });
+
+// ❌ IMPORTANTE: ELIMINAMOS el listener del +
+// btnNew?.addEventListener("click", ...)  <-- YA NO
 
 leftPanelBackdrop?.addEventListener("click", hideLeftPanel);
 closeLeftPanel?.addEventListener("click", hideLeftPanel);
 
-// ESC para cerrar
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && leftPanel.classList.contains("show"))
+  if (e.key === "Escape" && leftPanel?.classList.contains("show"))
     hideLeftPanel();
 });
 
-// Click en opciones del panel (por ahora demo)
+// Click en opciones del panel
 document.querySelectorAll("[data-panel-route]").forEach((btn) => {
   btn.addEventListener("click", () => {
-    // marca activo
     document
       .querySelectorAll("[data-panel-route]")
       .forEach((x) => x.classList.remove("isActive"));
     btn.classList.add("isActive");
-
-    // aquí luego conectamos rutas reales (plantillas, fotos, etc.)
     hideLeftPanel();
   });
 });

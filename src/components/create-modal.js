@@ -1,81 +1,164 @@
-import { initSizeView } from "./create-modal/views/size/size.js";
+// src/components/create-modal.js
+// Carga el HTML del modal y maneja vistas (size, etc.) con import dinámico.
 
-export async function mountCreateModal({ mountId, openButtonId } = {}) {
+let isBound = false;
+
+function qs(sel, root = document) {
+  return root.querySelector(sel);
+}
+
+function openModal() {
+  const modal = qs("#createModal");
+  if (!modal) return;
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden", "false");
+  document.body.classList.add("noScroll");
+}
+
+function closeModal() {
+  const modal = qs("#createModal");
+  if (!modal) return;
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden", "true");
+  document.body.classList.remove("noScroll");
+}
+
+function setActiveLeft(btn) {
+  const left = qs(".cmodal__left");
+  if (!left) return;
+  left
+    .querySelectorAll(".cmodal__item")
+    .forEach((b) => b.classList.remove("isActive"));
+  btn.classList.add("isActive");
+}
+
+async function loadView(viewName) {
+  const mount = qs("#cmodalViewMount");
+  if (!mount) return;
+
+  mount.innerHTML = "";
+
+  try {
+    // ✅ Rutas absolutas basadas en ESTE archivo (create-modal.js)
+    const base = new URL(
+      `./create-modal/views/${viewName}/${viewName}`,
+      import.meta.url,
+    );
+
+    const htmlUrl = `${base}.html`;
+    const jsUrl = `${base}.js`;
+
+    const html = await fetch(htmlUrl, { cache: "no-store" }).then((r) => {
+      if (!r.ok) throw new Error(`HTTP ${r.status} ${r.statusText}`);
+      return r.text();
+    });
+
+    mount.innerHTML = html;
+
+    const mod = await import(jsUrl);
+    if (mod?.initView) mod.initView(mount);
+    if (viewName === "size" && mod?.initSizeView) mod.initSizeView(mount);
+  } catch (e) {
+    mount.innerHTML = `
+      <div style="padding:16px;opacity:.85">
+        <b>No se pudo cargar la vista:</b> ${viewName}<br/>
+        Revisa rutas / archivos.
+      </div>`;
+    console.error(e);
+  }
+}
+
+export async function mountCreateModal({
+  mountId,
+  openButtonId,
+  defaultView = "size",
+} = {}) {
   const mount = document.getElementById(mountId);
-  const openBtn = document.getElementById(openButtonId);
-
   if (!mount) {
     console.warn("[create-modal] No existe mount:", mountId);
     return;
   }
-  if (!openBtn) {
-    console.warn("[create-modal] No existe botón +:", openButtonId);
-    return;
-  }
 
-  // 1) Carga HTML del modal (tu archivo real está aquí)
   const html = await fetch("./src/components/create-modal.html", {
     cache: "no-store",
   }).then((r) => r.text());
   mount.innerHTML = html;
 
-  // 2) Inicializa el comportamiento
-  initCreateModal({ openBtnId: openButtonId });
+  initCreateModal({ openButtonId, defaultView });
+}
+function createProjectFromSize({ width, height, unit, widthPx, heightPx }) {
+  const id = "nx_" + Math.random().toString(16).slice(2) + "_" + Date.now();
+
+  const project = {
+    id,
+    title: "Diseño sin título",
+    width,
+    height,
+    unit,
+    widthPx,
+    heightPx,
+    createdAt: new Date().toISOString(),
+    doc: { pages: [{ id: "p1", elements: [] }] },
+  };
+
+  const key = "nexia:projects";
+  const list = JSON.parse(localStorage.getItem(key) || "[]");
+  list.unshift(project);
+  localStorage.setItem(key, JSON.stringify(list));
+  localStorage.setItem("nexia:currentProjectId", id);
+
+  return id;
 }
 
-// src/components/create-modal.js
-import { initSizeView } from "./create-modal/views/size/size.js";
+export function initCreateModal({
+  openButtonId = "btnNew",
+  defaultView = "size",
+} = {}) {
+  if (isBound) return;
+  isBound = true;
 
-async function loadView(viewName) {
-  const mount = document.getElementById("cmodalViewMount");
-  if (!mount) return;
+  document.addEventListener("click", async (e) => {
+    const openBtn = e.target.closest(`#${openButtonId}`);
+    if (openBtn) {
+      e.preventDefault();
+      openModal();
 
-  // por ahora solo size; luego agregas más
-  if (viewName === "size") {
-    const html = await fetch(
-      "./src/components/create-modal/views/size/size.html",
-      { cache: "no-store" },
-    ).then((r) => r.text());
-    mount.innerHTML = html;
+      // carga la vista default al abrir
+      const leftBtn = qs(`.cmodal__item[data-view="${defaultView}"]`);
+      if (leftBtn) setActiveLeft(leftBtn);
 
-    // carga css (si no lo estás cargando global)
-    // TIP: si ya lo importas en create-modal.css no necesitas esto
-    initSizeView(mount);
-    return;
-  }
+      await loadView(defaultView);
+      return;
+    }
 
-  mount.innerHTML = `<div style="padding:16px;color:rgba(235,242,255,.75)">Vista "${viewName}" en construcción…</div>`;
-}
+    const closeBtn = e.target.closest("[data-close='1']");
+    if (closeBtn) {
+      e.preventDefault();
+      closeModal();
+      return;
+    }
 
-export function initCreateModal() {
-  const modal = document.getElementById("createModal");
-  const backdrop = document.getElementById("createBackdrop");
-  const closeBtn = document.getElementById("closeCreate");
+    const viewBtn = e.target.closest(".cmodal__item[data-view]");
+    if (viewBtn) {
+      e.preventDefault();
+      setActiveLeft(viewBtn);
+      await loadView(viewBtn.dataset.view);
+      return;
+    }
+  });
 
-  const btnNew = document.getElementById("btnNew"); // el plus del sidebar
-  const items = modal?.querySelectorAll(".cmodal__item[data-view]") || [];
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+  // ✅ Escucha cuando "Elegir tamaño" pide crear diseño
+  document.addEventListener("nexia:createDesign", (e) => {
+    const d = e.detail || {};
+    const id = createProjectFromSize(d);
 
-  function open() {
-    modal?.classList.add("show");
-    document.body.classList.add("noScroll");
-    // default: para ti o size como quieras
-    loadView("size"); // 👈 si quieres que abra directo tamaño
-  }
+    // cierra modal
+    closeModal();
 
-  function close() {
-    modal?.classList.remove("show");
-    document.body.classList.remove("noScroll");
-  }
-
-  btnNew?.addEventListener("click", open);
-  closeBtn?.addEventListener("click", close);
-  backdrop?.addEventListener("click", close);
-
-  items.forEach((btn) => {
-    btn.addEventListener("click", () => {
-      items.forEach((b) => b.classList.remove("isActive"));
-      btn.classList.add("isActive");
-      loadView(btn.dataset.view);
-    });
+    // navega al editor (tu ruta real)
+    window.location.href = `./src/editor/editor.html?designId=${encodeURIComponent(id)}`;
   });
 }

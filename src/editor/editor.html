@@ -1,74 +1,72 @@
 <!doctype html>
-<html lang="es" data-theme="dusk">
+<html lang="es" data-theme="dark">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Nexia | Editor</title>
+  <title>NEXIA | Editor</title>
 
   <link rel="stylesheet" href="../css/tokens.css" />
   <link rel="stylesheet" href="../css/base.css" />
   <link rel="stylesheet" href="./editor.css" />
 
+
   <script src="https://unpkg.com/konva@9/konva.min.js"></script>
 </head>
 
-<body class="ed">
-  <!-- TOP BAR -->
-  <header class="edTop">
-    <div class="edTop__left">
-      <a class="edBrand" href="../../app.html" aria-label="Volver">
-        <img src="../../assets/img/icono.png" alt="Nexia" class="edBrand__logo">
-        <span class="edBrand__name">NEXIA</span>
-      </a>
-
-      <div class="edDocTitle" id="docTitle">Diseño sin título</div>
-      <div class="edDocMeta" id="docMeta"></div>
-    </div>
-
-    <div class="edTop__right">
-      <button class="edBtn" id="btnBack" type="button">← Volver</button>
-      <button class="edBtn edBtn--primary" type="button">Compartir</button>
-    </div>
-  </header>
-
-  <div class="edBody">
-    <!-- LEFT RAIL -->
-    <aside class="edRail" aria-label="Herramientas">
-      <button class="edRail__item isActive">Diseño</button>
-      <button class="edRail__item">Elementos</button>
-      <button class="edRail__item">Texto</button>
-      <button class="edRail__item">Marca</button>
-      <button class="edRail__item">Subidos</button>
-      <button class="edRail__item">Apps</button>
-    </aside>
-
-    <!-- LEFT PANEL -->
-    <section class="edPanel" aria-label="Panel">
-      <div class="edPanel__search">
-        <input class="edPanel__input" placeholder="Buscar plantillas" />
+<body>
+  <div class="edShell">
+    <!-- TOP BAR -->
+    <header class="edTopbar">
+      <div class="edTopbar__left">
+        <button class="edIconBtn" id="btnBack" type="button" title="Volver">←</button>
+        <span class="edBrand">
+          <span class="edBrand__logo">N</span>
+          <span class="edBrand__name">NEXIA</span>
+        </span>
       </div>
 
-      <div class="edPanel__content">
-        <div class="edPanel__hint">
-          Aquí luego cargamos plantillas/elementos. (Paso 2)
+      <div class="edTopbar__center">
+        <div class="edDoc">
+          <div class="edDoc__title" id="docTitle">Diseño sin título</div>
+          <div class="edDoc__meta" id="docMeta">—</div>
         </div>
       </div>
-    </section>
 
-    <!-- CANVAS AREA -->
-    <main class="edStageWrap">
-      <div class="edStage" id="stageMount"></div>
+      <div class="edTopbar__right">
+        <button class="edTopBtn" type="button">Archivo</button>
+        <button class="edTopBtn" type="button">Editar</button>
+        <div class="edDivider"></div>
 
-      <div class="edBottom">
-        <div class="edZoom">
-          <button class="edZoom__btn" id="zoomOut">−</button>
-          <input class="edZoom__range" id="zoomRange" type="range" min="10" max="200" value="100">
-          <button class="edZoom__btn" id="zoomIn">+</button>
-          <div class="edZoom__pct" id="zoomPct">100%</div>
-        </div>
+        <button class="edIconBtn" id="zoomOut" type="button" title="Zoom -">−</button>
+        <input id="zoomRange" class="edZoomRange" type="range" min="10" max="200" value="100" />
+        <button class="edIconBtn" id="zoomIn" type="button" title="Zoom +">+</button>
+        <div class="edZoomPct" id="zoomPct">100%</div>
       </div>
-    </main>
+    </header>
+
+    <div class="edBody">
+      <!-- LEFT SIDEBAR -->
+      <aside class="edSide">
+        <div class="edSide__section">
+          <div class="edSide__title">Diseño</div>
+          <button class="edSide__item isActive">Diseño</button>
+          <button class="edSide__item">Elementos</button>
+          <button class="edSide__item">Texto</button>
+          <button class="edSide__item">Subidos</button>
+          <button class="edSide__item">Herramientas</button>
+          <button class="edSide__item">Proyectos</button>
+          <button class="edSide__item">Apps</button>
+        </div>
+      </aside>
+
+      <!-- CANVAS AREA -->
+      <main class="edMain">
+        <div class="edStageWrap">
+          <div id="stageMount"></div>
+        </div>
+      </main>
+    </div>
   </div>
 
   <script type="module" src="./editor.js"></script>
