@@ -1,75 +1,125 @@
 <!doctype html>
-<html lang="es" data-theme="dark">
+<html lang="es" data-theme="dusk">
 
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>NEXIA | Editor</title>
+  <title>Nexia | Editor</title>
 
   <link rel="stylesheet" href="../css/tokens.css" />
   <link rel="stylesheet" href="../css/base.css" />
   <link rel="stylesheet" href="./editor.css" />
-
-
-  <script src="https://unpkg.com/konva@9/konva.min.js"></script>
 </head>
 
-<body>
-  <div class="edShell">
-    <!-- TOP BAR -->
-    <header class="edTopbar">
-      <div class="edTopbar__left">
-        <button class="edIconBtn" id="btnBack" type="button" title="Volver">←</button>
-        <span class="edBrand">
-          <span class="edBrand__logo">N</span>
-          <span class="edBrand__name">NEXIA</span>
-        </span>
+<body class="nxEd">
+  <!-- TOP BAR (como Canva) -->
+  <header class="nxTop">
+    <div class="nxTop__left">
+      <a class="nxTop__brand" href="../../app.html" aria-label="Volver a Nexia">
+        <img src="../../assets/img/icono.png" class="nxTop__logo" alt="Nexia" />
+      </a>
+
+      <div class="nxTop__actions">
+        <button class="nxTop__btn" type="button">Archivo</button>
+        <button class="nxTop__btn" type="button">Redimensionar</button>
+        <button class="nxTop__btn" type="button">Editar</button>
       </div>
-
-      <div class="edTopbar__center">
-        <div class="edDoc">
-          <div class="edDoc__title" id="docTitle">Diseño sin título</div>
-          <div class="edDoc__meta" id="docMeta">—</div>
-        </div>
-      </div>
-
-      <div class="edTopbar__right">
-        <button class="edTopBtn" type="button">Archivo</button>
-        <button class="edTopBtn" type="button">Editar</button>
-        <div class="edDivider"></div>
-
-        <button class="edIconBtn" id="zoomOut" type="button" title="Zoom -">−</button>
-        <input id="zoomRange" class="edZoomRange" type="range" min="10" max="200" value="100" />
-        <button class="edIconBtn" id="zoomIn" type="button" title="Zoom +">+</button>
-        <div class="edZoomPct" id="zoomPct">100%</div>
-      </div>
-    </header>
-
-    <div class="edBody">
-      <!-- LEFT SIDEBAR -->
-      <aside class="edSide">
-        <div class="edSide__section">
-          <div class="edSide__title">Diseño</div>
-          <button class="edSide__item isActive">Diseño</button>
-          <button class="edSide__item">Elementos</button>
-          <button class="edSide__item">Texto</button>
-          <button class="edSide__item">Subidos</button>
-          <button class="edSide__item">Herramientas</button>
-          <button class="edSide__item">Proyectos</button>
-          <button class="edSide__item">Apps</button>
-        </div>
-      </aside>
-
-      <!-- CANVAS AREA -->
-      <main class="edMain">
-        <div class="edStageWrap">
-          <div id="stageMount"></div>
-        </div>
-      </main>
     </div>
+
+    <div class="nxTop__center">
+      <div class="nxDoc">
+        <div class="nxDoc__title" id="docTitle">Diseño sin título</div>
+        <div class="nxDoc__meta" id="docMeta">—</div>
+      </div>
+    </div>
+
+    <div class="nxTop__right">
+      <button class="nxTop__pill" type="button">Compartir</button>
+    </div>
+  </header>
+
+  <div class="nxMain">
+    <!-- LEFT: rail de iconos (tipo Canva) -->
+    <aside class="nxRail" aria-label="Herramientas">
+      <button class="nxRail__item isActive" data-tab="design" title="Diseño">🎨</button>
+      <button class="nxRail__item" data-tab="elements" title="Elementos">✦</button>
+      <button class="nxRail__item" data-tab="text" title="Texto">T</button>
+      <button class="nxRail__item" data-tab="brand" title="Marca">🏷️</button>
+      <button class="nxRail__item" data-tab="uploads" title="Subidos">☁️</button>
+      <button class="nxRail__item" data-tab="projects" title="Proyectos">📁</button>
+    </aside>
+
+    <!-- LEFT: panel (Plantillas/Estilos + buscador) -->
+    <section class="nxPanel" aria-label="Panel">
+      <div class="nxPanel__search">
+        <input class="nxPanel__input" placeholder="Buscar plantillas" />
+        <button class="nxPanel__mic" type="button" title="Voz">🎤</button>
+      </div>
+
+      <div class="nxPanel__tabs">
+        <button class="nxPanel__tab isActive" data-subtab="templates">Plantillas</button>
+        <button class="nxPanel__tab" data-subtab="styles">Estilos</button>
+      </div>
+
+      <div class="nxPanel__content" id="leftContent">
+        <!-- aquí luego renderizamos mini-cards tipo Canva -->
+        <div class="nxHint">Aquí cargamos plantillas/estilos.</div>
+      </div>
+    </section>
+
+    <!-- CENTER: canvas -->
+    <main class="nxStage">
+      <div class="nxStage__bg">
+        <div class="nxCanvasWrap">
+          <div class="nxCanvas" id="stageMount"></div>
+        </div>
+        <!-- FLOATING BAR (como Canva) -->
+        <div class="nxFloatBar" id="nxFloatBar">
+          <button class="nxFloatBar__pill" type="button">✨ Pídeselo a Nexia</button>
+          <span class="nxFloatBar__sep">|</span>
+          <span class="nxFloatBar__sep">|</span>
+          <button class="nxFloatBar__pill" type="button">⏱ <span id="nxTimer">5.0 s</span></button>
+          <button class="nxFloatBar__pill" type="button">🪄 Borrador Mágico</button>
+          <button class="nxFloatBar__pill" type="button">⚪ Posición</button>
+          <!-- dentro de .nxFloatBar -->
+          <button class="nxFloatBar__btn" id="nxUndo" type="button" title="Deshacer">↶</button>
+          <button class="nxFloatBar__btn" id="nxRedo" type="button" title="Rehacer">↷</button>
+
+          <label class="nxFloatBar__pill" style="cursor:pointer">
+            🖼️ Subir
+            <input id="nxImgInput" type="file" accept="image/*" hidden />
+          </label>
+
+          <button class="nxFloatBar__pill" id="nxBgBtn" type="button">🎨 Fondo</button>
+          <input id="nxBgColor" type="color" value="#ffffff" style="display:none" />
+
+        </div>
+
+      </div>
+
+      <!-- Bottom bar: páginas + zoom -->
+      <footer class="nxBottom">
+        <div class="nxPages">
+          <div class="nxPageThumb isActive">
+            <div class="nxPageThumb__mini"></div>
+            <span>1</span>
+          </div>
+          <button class="nxPageAdd" type="button" title="Agregar página">＋</button>
+        </div>
+
+        <div class="nxZoom">
+          <button class="nxZoom__btn" id="zoomOut" type="button">−</button>
+          <input class="nxZoom__range" id="zoomRange" type="range" min="10" max="200" value="100" />
+          <button class="nxZoom__btn" id="zoomIn" type="button">+</button>
+          <div class="nxZoom__pct" id="zoomPct">100%</div>
+        </div>
+      </footer>
+    </main>
   </div>
 
+  <script src="https://unpkg.com/konva@9/konva.min.js"></script>
   <script type="module" src="./editor.js"></script>
+
 </body>
 
 </html>

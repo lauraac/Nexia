@@ -502,17 +502,13 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==============================
 // Left Panel (tipo Canva)  ✅ SOLO CON ☰
 // ==============================
+// ==============================
+// Left Panel (tipo Canva)  ✅ SOLO CON ☰
+// ==============================
 const leftPanel = document.getElementById("leftPanel");
 const leftPanelBackdrop = document.getElementById("leftPanelBackdrop");
 const closeLeftPanel = document.getElementById("closeLeftPanel");
-
-const btnNew = document.getElementById("btnNew"); // +  (NO se usa aquí)
 const btnMenu = document.getElementById("btnMenu");
-
-btnMenu?.addEventListener("click", () => {
-  if (leftPanel.classList.contains("show")) hideLeftPanel();
-  else openLeftPanel();
-});
 
 function openLeftPanel() {
   leftPanel?.classList.add("show");
@@ -524,30 +520,33 @@ function hideLeftPanel() {
   leftPanel?.setAttribute("aria-hidden", "true");
 }
 
-// ✅ SOLO el ☰ abre/cierra el panel
+// ☰ abre / cierra
 btnMenu?.addEventListener("click", (e) => {
   e.preventDefault();
+  e.stopPropagation();
+
   if (leftPanel?.classList.contains("show")) hideLeftPanel();
   else openLeftPanel();
 });
 
-// ❌ IMPORTANTE: ELIMINAMOS el listener del +
-// btnNew?.addEventListener("click", ...)  <-- YA NO
-
+// backdrop y cerrar
 leftPanelBackdrop?.addEventListener("click", hideLeftPanel);
 closeLeftPanel?.addEventListener("click", hideLeftPanel);
 
+// ESC
 document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && leftPanel?.classList.contains("show"))
+  if (e.key === "Escape" && leftPanel?.classList.contains("show")) {
     hideLeftPanel();
+  }
 });
 
-// Click en opciones del panel
+// items del panel
 document.querySelectorAll("[data-panel-route]").forEach((btn) => {
   btn.addEventListener("click", () => {
     document
       .querySelectorAll("[data-panel-route]")
       .forEach((x) => x.classList.remove("isActive"));
+
     btn.classList.add("isActive");
     hideLeftPanel();
   });
