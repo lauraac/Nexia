@@ -1,57 +1,64 @@
-// src/editor/modules/history.js
-export function createHistory() {
+export function createHistory({ project, canvasApi }) {
   const undoStack = [];
   const redoStack = [];
-  let pending = null;
 
-  function push(doFn, undoFn) {
-    pending = { doFn, undoFn };
-  }
+  const snapshot = () =>
+    JSON.stringify({
+      doc: project.doc,
+    });
 
-  function doLast() {
-    if (!pending) return;
-    pending.doFn();
-    undoStack.push(pending);
+  const restore = (snap) => {
+    const state = JSON.parse(snap);
+    project.doc = state.doc;
+    canvasApi.loadActivePage();
+  };
+
+  const pushSnapshot = () => {
+    undoStack.push(snapshot());
     redoStack.length = 0;
-    pending = null;
-  }
+  };
 
-  function undo() {
-    const a = undoStack.pop();
-    if (!a) return;
-    a.undoFn();
-    redoStack.push(a);
-  }
+  const undo = () => {
+    if (undoStack.length <= 1) return;
+    const current = undoStack.pop();
+    redoStack.push(current);
+    restore(undoStack[undoStack.length - 1]);
+  };
 
-  function redo() {
-    const a = redoStack.pop();
-    if (!a) return;
-    a.doFn();
-    undoStack.push(a);
-  }
+  const redo = () => {
+    if (!redoStack.length) return;
+    const next = redoStack.pop();
+    undoStack.push(next);
+    restore(next);
+  };
 
-  // teclas
-  window.addEventListener("keydown", (e) => {
-    const isMac = navigator.platform.toLowerCase().includes("mac");
-    const ctrl = isMac ? e.metaKey : e.ctrlKey;
-
-    if (!ctrl) return;
-
-    if (e.key.toLowerCase() === "z") {
-      e.preventDefault();
-      if (e.shiftKey) redo();
-      else undo();
-    }
-    if (e.key.toLowerCase() === "y") {
-      e.preventDefault();
-      redo();
-    }
-  });
-
-  return { push, doLast, undo, redo };
+  return { pushSnapshot, undo, redo };
 }
 
 export function bindUndoRedoButtons(history) {
-  document.getElementById("nxUndo")?.addEventListener("click", history.undo);
-  document.getElementById("nxRedo")?.addEventListener("click", history.redo);
+  const undoBtn = document.getElementById("nxUndo");
+  const redoBtn = document.getElementById("nxRedo");
+
+  undoBtn?.addEventListener("click", () => history.undo());
+  redoBtn?.addEventListener("click", () => history.redo());
+
+  document.addEventListener("keydown", (e) => {
+    const isMac = navigator.platform.toLowerCase().includes("mac");
+    const mod = isMac ? e.metaKey : e.ctrlKey;
+
+    if (!mod) return;
+
+    if (e.key.toLowerCase() === "z" && !e.shiftKey) {
+      e.preventDefault();
+      history.undo();
+    }
+
+    if (
+      e.key.toLowerCase() === "y" ||
+      (e.key.toLowerCase() === "z" && e.shiftKey)
+    ) {
+      e.preventDefault();
+      history.redo();
+    }
+  });
 }

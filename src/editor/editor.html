@@ -39,11 +39,11 @@
   </header>
 
   <div class="nxMain">
-    <!-- (solo móvil) zona para swipe + overlay -->
+    <!-- móvil -->
     <div class="nxEdgeHotspot" id="nxEdgeHotspot" aria-hidden="true"></div>
     <div class="nxOverlay" id="nxOverlay" aria-hidden="true"></div>
 
-    <!-- LEFT: rail + panel juntos -->
+    <!-- IZQUIERDA: rail + panel -->
     <div class="nxLeft" id="nxLeft">
       <aside class="nxRail" aria-label="Herramientas">
         <button class="nxRail__item isActive" data-tab="design" title="Diseño">🎨</button>
@@ -70,7 +70,6 @@
         </div>
       </section>
     </div>
-
     <!-- CENTER: canvas -->
     <main class="nxStage">
       <div class="nxStage__bg">
@@ -101,7 +100,6 @@
 
       <footer class="nxBottom">
         <div class="nxPages">
-          <!-- pages.js renderiza aquí -->
           <button class="nxPageAdd" type="button" title="Agregar página">＋</button>
         </div>
 
@@ -109,9 +107,14 @@
           <button class="nxZoom__btn" id="zoomOut" type="button">−</button>
           <input class="nxZoom__range" id="zoomRange" type="range" min="10" max="200" value="100" />
           <button class="nxZoom__btn" id="zoomIn" type="button">＋</button>
+
+          <!-- ESTE + ES OPCIONAL (yo lo dejo) -->
+          <button class="nxPageAdd" id="nxAddPage" type="button" title="Agregar página">＋</button>
+
           <div class="nxZoom__pct" id="zoomPct">100%</div>
         </div>
       </footer>
+
     </main>
   </div>
 

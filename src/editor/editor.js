@@ -1,72 +1,80 @@
 import { bus } from "./modules/bus.js";
-import { loadCurrentProject, ensureProjectHasPages } from "./modules/store.js";
+import {
+  loadCurrentProject,
+  ensureProjectHasPages,
+  saveProject,
+} from "./modules/store.js";
 import { initCanvas } from "./modules/canvas.js";
 import { initZoom } from "./modules/zoom.js";
 import { initPages } from "./modules/pages.js";
 import { initFloatingBar } from "./modules/floatingbar.js";
-
-// 👉 NUEVOS imports
+import { initPasteImage } from "./modules/pasteImage.js";
 import { createHistory, bindUndoRedoButtons } from "./modules/history.js";
 import { initImages } from "./modules/images.js";
-import { initClipboard } from "./modules/clipboard.js";
 import { initBackground } from "./modules/background.js";
 
+// ✅ NO usar clipboard ahorita (está incompatible)
+// import { initClipboard } from "./modules/clipboard.js";
+
 /* ===============================
-   1️⃣ Cargar proyecto
+   1) Cargar proyecto
 ================================ */
 const project = loadCurrentProject();
 ensureProjectHasPages(project);
 
 /* ===============================
-   2️⃣ Título y meta
+   2) Título y meta
 ================================ */
 const titleEl = document.getElementById("docTitle");
 const metaEl = document.getElementById("docMeta");
 
-titleEl.textContent = project.title || "Diseño sin título";
-metaEl.textContent = `${project.width} × ${project.height} ${project.unit}`;
+if (titleEl) titleEl.textContent = project.title || "Diseño sin título";
+if (metaEl)
+  metaEl.textContent = `${project.width} × ${project.height} ${project.unit}`;
 
 /* ===============================
-   3️⃣ Canvas
+   3) Canvas
 ================================ */
 const canvasApi = initCanvas(project);
 
-/* ===============================
-   4️⃣ Zoom visual (slider)
-================================ */
-initZoom(canvasApi);
+/* helper: página activa (✅ ESTA ES LA BUENA) */
+const getActivePage = () =>
+  project.doc.pages.find((p) => p.id === project.doc.activePageId) ||
+  project.doc.pages[0];
 
 /* ===============================
-   5️⃣ Historial (UNDO / REDO)
+   4) History (UNDO/REDO)
 ================================ */
-const history = createHistory();
+const history = createHistory({ project, canvasApi });
 bindUndoRedoButtons(history);
 
-/* helper: página activa */
-const getActivePage = () => project.doc.pages[project.doc.activePage || 0];
+// snapshot base inicial (para que undo tenga un punto de partida)
+history.pushSnapshot();
 
 /* ===============================
-   6️⃣ Funciones reales del editor
+   5) Módulos
 ================================ */
 initBackground({ canvasApi, history, getActivePage });
 initImages({ canvasApi, history, getActivePage });
-initClipboard({ canvasApi, history, getActivePage });
+initPasteImage({ canvasApi, history });
 
-/* ===============================
-   7️⃣ Páginas (abajo)
-================================ */
+// initClipboard({ canvasApi, history, getActivePage }); // ❌ por ahora NO
+
 initPages({
   project,
   canvasApi,
   history,
-  saveProject: () => {
-    const list = JSON.parse(localStorage.getItem("nexia:projects") || "[]");
-    const i = list.findIndex((x) => x.id === project.id);
-    if (i >= 0) list[i] = project;
-    localStorage.setItem("nexia:projects", JSON.stringify(list));
-  },
+  saveProject: () => saveProject(project),
 });
 
+/* ===============================
+   6) Zoom
+================================ */
+initZoom(canvasApi);
+
+/* ===============================
+   7) Drawer móvil (swipe + tap fuera)
+================================ */
 (function initLeftDrawer() {
   const left = document.getElementById("nxLeft");
   const overlay = document.getElementById("nxOverlay");
@@ -90,10 +98,9 @@ initPages({
   overlay.addEventListener("click", close);
   stageArea?.addEventListener("click", () => isMobile() && close());
 
-  // swipe desde el borde
-  let startX = 0,
-    startY = 0,
-    tracking = false;
+  let startX = 0;
+  let startY = 0;
+  let tracking = false;
 
   const onStart = (e) => {
     if (!isMobile()) return;
@@ -114,24 +121,21 @@ initPages({
     }
   };
 
-  const onEnd = () => {
-    tracking = false;
-  };
+  const onEnd = () => (tracking = false);
 
   hotspot?.addEventListener("touchstart", onStart, { passive: true });
   hotspot?.addEventListener("touchmove", onMove, { passive: true });
   hotspot?.addEventListener("touchend", onEnd);
 
-  // inicia cerrado en móvil
   close();
 })();
 
 /* ===============================
-   8️⃣ Barra flotante (UI)
+   8) Barra flotante (solo UI)
 ================================ */
 initFloatingBar();
 
 /* ===============================
-   9️⃣ Evento listo
+   9) Evento listo
 ================================ */
 bus.emit("project:ready", { project });

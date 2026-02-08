@@ -1,6 +1,6 @@
 /* src/editor/editor.css */
 
-/* ===== Base ===== */
+/* ============ BASE ============ */
 html,
 body {
   height: 100%;
@@ -19,7 +19,7 @@ body.nxEd {
     Arial;
 }
 
-/* ===== Top ===== */
+/* ============ TOP BAR ============ */
 .nxTop {
   height: 56px;
   display: grid;
@@ -39,11 +39,13 @@ body.nxEd {
   align-items: center;
   gap: 12px;
 }
+
 .nxTop__brand {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
 }
+
 .nxTop__logo {
   width: 34px;
   height: 34px;
@@ -54,6 +56,7 @@ body.nxEd {
   display: flex;
   gap: 6px;
 }
+
 .nxTop__btn {
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.04);
@@ -62,6 +65,7 @@ body.nxEd {
   border-radius: 10px;
   cursor: pointer;
 }
+
 .nxTop__btn:hover {
   background: rgba(255, 255, 255, 0.07);
 }
@@ -69,12 +73,15 @@ body.nxEd {
 .nxTop__center {
   justify-self: center;
 }
+
 .nxDoc {
   text-align: center;
 }
+
 .nxDoc__title {
   font-weight: 700;
 }
+
 .nxDoc__meta {
   font-size: 12px;
   opacity: 0.7;
@@ -83,6 +90,7 @@ body.nxEd {
 .nxTop__right {
   justify-self: end;
 }
+
 .nxTop__pill {
   border: 1px solid rgba(159, 122, 255, 0.45);
   background: rgba(159, 122, 255, 0.16);
@@ -92,33 +100,34 @@ body.nxEd {
   cursor: pointer;
 }
 
-/* ===== Main layout ===== */
+/* ============ MAIN LAYOUT ============ */
+/* Desktop: izquierda fija + stage */
 .nxMain {
   height: calc(100vh - 56px);
   display: grid;
-  grid-template-columns: 424px 1fr; /* LEFT + STAGE */
+  grid-template-columns: 424px 1fr; /* nxLeft + nxStage */
   overflow: hidden;
   min-height: 0;
 }
 
-/* LEFT wrapper: rail + panel */
+/* izquierda: rail + panel */
 .nxLeft {
-  display: grid;
-  grid-template-columns: 64px 360px;
   height: 100%;
+  display: grid;
+  grid-template-columns: 64px 360px; /* rail + panel */
   min-width: 0;
   overflow: hidden;
+  border-right: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-/* Desktop: overlay/hotspot off */
+/* Desktop NO usa overlay/hotspot */
 .nxOverlay,
 .nxEdgeHotspot {
   display: none;
 }
 
-/* ===== Rail ===== */
+/* ============ RAIL ============ */
 .nxRail {
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(12, 16, 26, 0.85);
   display: flex;
   flex-direction: column;
@@ -142,17 +151,15 @@ body.nxEd {
   background: rgba(159, 122, 255, 0.12);
 }
 
-/* ===== Panel ===== */
+/* ============ PANEL ============ */
 .nxPanel {
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(12, 16, 26, 0.65);
   padding: 12px;
   display: grid;
   grid-template-rows: auto auto 1fr;
   gap: 12px;
-
-  min-height: 0;
-  min-width: 0;
+  min-height: 0; /* clave */
+  overflow: hidden;
 }
 
 .nxPanel__search {
@@ -203,7 +210,7 @@ body.nxEd {
 
 .nxPanel__content {
   min-height: 0;
-  overflow: auto;
+  overflow: auto; /* scroll SOLO aquí */
   padding-right: 4px;
 }
 
@@ -214,11 +221,11 @@ body.nxEd {
   opacity: 0.8;
 }
 
-/* ===== Stage ===== */
+/* ============ STAGE ============ */
 .nxStage {
   position: relative;
   display: grid;
-  grid-template-rows: 1fr auto;
+  grid-template-rows: 1fr auto; /* bg + bottom */
   min-width: 0;
   min-height: 0;
   overflow: hidden;
@@ -226,39 +233,35 @@ body.nxEd {
 
 .nxStage__bg {
   position: relative;
-  min-height: 0;
-  overflow: hidden;
-
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: center; /* centrado */
+  justify-content: center; /* centrado */
   padding: 12px;
+  overflow: hidden;
+  min-height: 0;
 }
 
-/* el tamaño real lo pone JS en #stageMount */
-.nxCanvas {
-  width: auto;
-  height: auto;
-}
-
+/* el “papel” se escala aquí */
 .nxCanvasWrap {
-  transform-origin: center center;
   will-change: transform;
+  transform-origin: center center; /* escala desde el centro */
 }
 
-/* ===== Floating bar ===== */
+.nxCanvas {
+  /* Konva usa el size del container (JS) */
+}
+
+/* ============ FLOATING BAR ============ */
 .nxFloatBar {
   position: absolute;
   top: 14px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 6;
-
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 8px 10px;
-
   border-radius: 999px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(10, 14, 22, 0.82);
@@ -290,19 +293,17 @@ body.nxEd {
   opacity: 0.5;
 }
 
-/* ===== Bottom ===== */
+/* ============ BOTTOM BAR ============ */
 .nxBottom {
   height: 64px;
-  min-height: 64px;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(10, 14, 22, 0.92);
-
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 14px;
   gap: 14px;
-
+  min-height: 64px;
   overflow: hidden;
 }
 
@@ -310,7 +311,6 @@ body.nxEd {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-width: 0;
 }
 
 .nxPageThumb {
@@ -404,14 +404,14 @@ body.nxEd {
   opacity: 0.85;
 }
 
-/* ===== Mobile drawer ===== */
+/* ============ MOBILE DRAWER (<=980px) ============ */
 @media (max-width: 980px) {
   :root {
     --nxLeftW: 424px;
   }
 
   .nxMain {
-    grid-template-columns: 1fr; /* solo stage */
+    grid-template-columns: 1fr; /* stage ocupa todo */
   }
 
   .nxLeft {
@@ -422,7 +422,6 @@ body.nxEd {
     width: var(--nxLeftW);
     display: grid;
     grid-template-columns: 64px 360px;
-
     transform: translateX(calc(-1 * var(--nxLeftW)));
     transition: transform 0.18s ease;
     pointer-events: none;
@@ -435,6 +434,7 @@ body.nxEd {
   }
 
   .nxOverlay {
+    display: block;
     position: fixed;
     inset: 56px 0 0 0;
     background: rgba(0, 0, 0, 0.25);
@@ -442,7 +442,6 @@ body.nxEd {
     pointer-events: none;
     transition: opacity 0.18s ease;
     z-index: 19;
-    display: block;
   }
 
   .nxOverlay.isOpen {
@@ -451,12 +450,12 @@ body.nxEd {
   }
 
   .nxEdgeHotspot {
+    display: block;
     position: fixed;
     top: 56px;
     left: 0;
     height: calc(100vh - 56px);
     width: 14px;
     z-index: 18;
-    display: block;
   }
 }

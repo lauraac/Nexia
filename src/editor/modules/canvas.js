@@ -1,4 +1,3 @@
-// src/editor/modules/canvas.js
 import { saveProject } from "./store.js";
 
 export function initCanvas(project) {
@@ -8,16 +7,13 @@ export function initCanvas(project) {
   const wrap = mount.closest(".nxCanvasWrap");
   if (!wrap) throw new Error("[canvas] No existe .nxCanvasWrap");
 
-  // -----------------------------
-  // 1) Normaliza project (sin romper)
-  // -----------------------------
+  // Normaliza project
   project.doc = project.doc || {};
   project.doc.pages = Array.isArray(project.doc.pages) ? project.doc.pages : [];
 
   if (project.doc.pages.length === 0) {
     project.doc.pages.push({ id: "p1", background: "#ffffff", elements: [] });
   }
-
   if (!project.doc.activePageId) {
     project.doc.activePageId = project.doc.pages[0].id;
   }
@@ -29,9 +25,7 @@ export function initCanvas(project) {
   mount.style.width = `${W}px`;
   mount.style.height = `${H}px`;
 
-  // -----------------------------
-  // 2) Konva básico (tu versión)
-  // -----------------------------
+  // Konva stage + layer
   const stage = new Konva.Stage({
     container: "stageMount",
     width: W,
@@ -41,7 +35,7 @@ export function initCanvas(project) {
   const layer = new Konva.Layer();
   stage.add(layer);
 
-  // Fondo blanco real
+  // Fondo
   const bg = new Konva.Rect({
     x: 0,
     y: 0,
@@ -49,11 +43,14 @@ export function initCanvas(project) {
     height: H,
     fill: "#fff",
     name: "nx-bg",
+    listening: false, // ✅ no recibe click/tap
+    perfectDrawEnabled: false,
   });
 
+  bg.setAttr("nxLocked", true); // ✅ marca extra por si acaso
   layer.add(bg);
 
-  // Selección (Transformer)
+  // Transformer
   const tr = new Konva.Transformer({
     rotateEnabled: true,
     enabledAnchors: [
@@ -71,13 +68,8 @@ export function initCanvas(project) {
       return newBox;
     },
   });
-
   layer.add(tr);
-  layer.draw();
 
-  // -----------------------------
-  // 3) Helpers de página
-  // -----------------------------
   function getActivePage() {
     const id = project.doc.activePageId;
     return project.doc.pages.find((p) => p.id === id) || project.doc.pages[0];
@@ -100,9 +92,6 @@ export function initCanvas(project) {
     saveProject(project);
   }
 
-  // -----------------------------
-  // 4) Render de elementos (por ahora: imágenes)
-  // -----------------------------
   function clearPageButKeepBg() {
     const keep = new Set([bg._id, tr._id]);
     layer.getChildren().forEach((n) => {
@@ -163,10 +152,9 @@ export function initCanvas(project) {
           draggable: true,
           name: "nx-el",
         });
+
         node._nxId = el.id;
-
         wireSelectable(node);
-
         layer.add(node);
         resolve(node);
       };
@@ -181,16 +169,13 @@ export function initCanvas(project) {
 
     clearPageButKeepBg();
 
-    // aplica fondo de la página
     bg.fill(page.background || "#ffffff");
 
-    // pinta elementos
     for (const el of page.elements) {
       if (el.type === "image") {
         await renderImage(el);
       }
     }
-
     layer.draw();
   }
 
@@ -202,17 +187,11 @@ export function initCanvas(project) {
     }
   });
 
-  // -----------------------------
-  // 5) Zoom (tu forma)
-  // -----------------------------
   function setZoomScale(scale) {
     wrap.style.transformOrigin = "center center";
     wrap.style.transform = `scale(${scale})`;
   }
 
-  // -----------------------------
-  // 6) Acciones: imágenes / borrar / páginas
-  // -----------------------------
   async function addImageFromDataUrl(dataUrl) {
     const page = getActivePage();
     page.elements = Array.isArray(page.elements) ? page.elements : [];
@@ -254,7 +233,6 @@ export function initCanvas(project) {
     tr.nodes([]);
     node.destroy();
     layer.draw();
-
     saveProject(project);
   }
 
@@ -285,7 +263,6 @@ export function initCanvas(project) {
     return true;
   }
 
-  // Tecla delete/backspace
   document.addEventListener("keydown", (e) => {
     if (e.key !== "Delete" && e.key !== "Backspace") return;
     const tag = document.activeElement?.tagName?.toLowerCase();
@@ -293,7 +270,6 @@ export function initCanvas(project) {
     deleteSelected();
   });
 
-  // Inicial
   loadActivePage();
 
   return {
@@ -309,7 +285,6 @@ export function initCanvas(project) {
     setZoomScale,
     setActivePage,
 
-    // NUEVO
     setBackground,
     addImageFromDataUrl,
     deleteSelected,
