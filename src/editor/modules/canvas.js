@@ -1,3 +1,4 @@
+// src/editor/modules/canvas.js
 import { saveProject } from "./store.js";
 
 export function initCanvas(project) {
@@ -7,7 +8,9 @@ export function initCanvas(project) {
   const wrap = mount.closest(".nxCanvasWrap");
   if (!wrap) throw new Error("[canvas] No existe .nxCanvasWrap");
 
-  // Normaliza project
+  // -----------------------------
+  // 1) Normaliza project
+  // -----------------------------
   project.doc = project.doc || {};
   project.doc.pages = Array.isArray(project.doc.pages) ? project.doc.pages : [];
 
@@ -18,14 +21,15 @@ export function initCanvas(project) {
     project.doc.activePageId = project.doc.pages[0].id;
   }
 
-  // Tamaño del “papel”
   const W = project.widthPx || 700;
   const H = project.heightPx || 700;
 
   mount.style.width = `${W}px`;
   mount.style.height = `${H}px`;
 
-  // Konva stage + layer
+  // -----------------------------
+  // 2) Konva
+  // -----------------------------
   const stage = new Konva.Stage({
     container: "stageMount",
     width: W,
@@ -35,7 +39,7 @@ export function initCanvas(project) {
   const layer = new Konva.Layer();
   stage.add(layer);
 
-  // Fondo
+  // Fondo (no seleccionable)
   const bg = new Konva.Rect({
     x: 0,
     y: 0,
@@ -43,14 +47,11 @@ export function initCanvas(project) {
     height: H,
     fill: "#fff",
     name: "nx-bg",
-    listening: false, // ✅ no recibe click/tap
-    perfectDrawEnabled: false,
+    listening: false, // ✅ clave
   });
-
-  bg.setAttr("nxLocked", true); // ✅ marca extra por si acaso
+  bg.setAttr("nxLocked", true);
   layer.add(bg);
 
-  // Transformer
   const tr = new Konva.Transformer({
     rotateEnabled: true,
     enabledAnchors: [
@@ -69,7 +70,11 @@ export function initCanvas(project) {
     },
   });
   layer.add(tr);
+  layer.draw();
 
+  // -----------------------------
+  // 3) Páginas
+  // -----------------------------
   function getActivePage() {
     const id = project.doc.activePageId;
     return project.doc.pages.find((p) => p.id === id) || project.doc.pages[0];
@@ -78,7 +83,6 @@ export function initCanvas(project) {
   function setActivePage(pageId) {
     const exists = project.doc.pages.some((p) => p.id === pageId);
     if (!exists) return;
-
     project.doc.activePageId = pageId;
     saveProject(project);
     loadActivePage();
@@ -92,6 +96,9 @@ export function initCanvas(project) {
     saveProject(project);
   }
 
+  // -----------------------------
+  // 4) Render
+  // -----------------------------
   function clearPageButKeepBg() {
     const keep = new Set([bg._id, tr._id]);
     layer.getChildren().forEach((n) => {
@@ -155,12 +162,33 @@ export function initCanvas(project) {
 
         node._nxId = el.id;
         wireSelectable(node);
+
         layer.add(node);
         resolve(node);
       };
       img.onerror = () => resolve(null);
       img.src = el.src;
     });
+  }
+
+  async function _renderFromModelElement(el) {
+    if (el.type === "image") {
+      const node = await renderImage(el);
+      layer.draw();
+      return node;
+    }
+    return null;
+  }
+
+  function _selectById(id) {
+    const node = layer
+      .getChildren()
+      .find((n) => n && n._nxId && n._nxId === id);
+
+    if (!node) return;
+    tr.nodes([node]);
+    tr.moveToTop();
+    layer.draw();
   }
 
   async function loadActivePage() {
@@ -172,26 +200,31 @@ export function initCanvas(project) {
     bg.fill(page.background || "#ffffff");
 
     for (const el of page.elements) {
-      if (el.type === "image") {
-        await renderImage(el);
-      }
+      await _renderFromModelElement(el);
     }
+
     layer.draw();
   }
 
-  // click en fondo => quitar selección
   stage.on("click tap", (e) => {
-    if (e.target === stage || e.target === bg) {
+    // como bg no escucha, aquí solo limpiamos si es stage
+    if (e.target === stage) {
       tr.nodes([]);
       layer.draw();
     }
   });
 
+  // -----------------------------
+  // 5) Zoom
+  // -----------------------------
   function setZoomScale(scale) {
     wrap.style.transformOrigin = "center center";
     wrap.style.transform = `scale(${scale})`;
   }
 
+  // -----------------------------
+  // 6) Acciones
+  // -----------------------------
   async function addImageFromDataUrl(dataUrl) {
     const page = getActivePage();
     page.elements = Array.isArray(page.elements) ? page.elements : [];
@@ -212,9 +245,9 @@ export function initCanvas(project) {
     page.elements.push(el);
     saveProject(project);
 
-    const node = await renderImage(el);
-    layer.draw();
-    if (node) tr.nodes([node]);
+    await _renderFromModelElement(el);
+    _selectById(id);
+
     return id;
   }
 
@@ -227,8 +260,11 @@ export function initCanvas(project) {
     const node = getSelectedNode();
     if (!node) return;
 
+    const id = node._nxId;
+    if (!id) return; // ✅ evita borrar cosas no-modelo
+
     const page = getActivePage();
-    page.elements = (page.elements || []).filter((x) => x.id !== node._nxId);
+    page.elements = (page.elements || []).filter((x) => x.id !== id);
 
     tr.nodes([]);
     node.destroy();
@@ -270,6 +306,7 @@ export function initCanvas(project) {
     deleteSelected();
   });
 
+  // Inicial
   loadActivePage();
 
   return {
@@ -292,5 +329,9 @@ export function initCanvas(project) {
     addPage,
     deletePage,
     getActivePage,
+
+    // ✅ helpers internos para clipboard
+    _renderFromModelElement,
+    _selectById,
   };
 }
