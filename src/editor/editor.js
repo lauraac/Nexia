@@ -67,6 +67,65 @@ initPages({
   },
 });
 
+(function initLeftDrawer() {
+  const left = document.getElementById("nxLeft");
+  const overlay = document.getElementById("nxOverlay");
+  const hotspot = document.getElementById("nxEdgeHotspot");
+  const stageArea = document.querySelector(".nxStage__bg");
+  if (!left || !overlay) return;
+
+  const isMobile = () => window.matchMedia("(max-width: 980px)").matches;
+
+  const open = () => {
+    if (!isMobile()) return;
+    left.classList.add("isOpen");
+    overlay.classList.add("isOpen");
+  };
+
+  const close = () => {
+    left.classList.remove("isOpen");
+    overlay.classList.remove("isOpen");
+  };
+
+  overlay.addEventListener("click", close);
+  stageArea?.addEventListener("click", () => isMobile() && close());
+
+  // swipe desde el borde
+  let startX = 0,
+    startY = 0,
+    tracking = false;
+
+  const onStart = (e) => {
+    if (!isMobile()) return;
+    tracking = true;
+    const t = e.touches[0];
+    startX = t.clientX;
+    startY = t.clientY;
+  };
+
+  const onMove = (e) => {
+    if (!tracking || !isMobile()) return;
+    const t = e.touches[0];
+    const dx = t.clientX - startX;
+    const dy = t.clientY - startY;
+    if (Math.abs(dx) > 30 && Math.abs(dy) < 40) {
+      if (dx > 0) open();
+      tracking = false;
+    }
+  };
+
+  const onEnd = () => {
+    tracking = false;
+  };
+
+  hotspot?.addEventListener("touchstart", onStart, { passive: true });
+  hotspot?.addEventListener("touchmove", onMove, { passive: true });
+  hotspot?.addEventListener("touchend", onEnd);
+
+  // inicia cerrado en móvil
+  close();
+})();
+
 /* ===============================
    8️⃣ Barra flotante (UI)
 ================================ */

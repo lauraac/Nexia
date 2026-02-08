@@ -39,33 +39,37 @@
   </header>
 
   <div class="nxMain">
-    <!-- LEFT: rail de iconos (tipo Canva) -->
-    <aside class="nxRail" aria-label="Herramientas">
-      <button class="nxRail__item isActive" data-tab="design" title="Diseño">🎨</button>
-      <button class="nxRail__item" data-tab="elements" title="Elementos">✦</button>
-      <button class="nxRail__item" data-tab="text" title="Texto">T</button>
-      <button class="nxRail__item" data-tab="brand" title="Marca">🏷️</button>
-      <button class="nxRail__item" data-tab="uploads" title="Subidos">☁️</button>
-      <button class="nxRail__item" data-tab="projects" title="Proyectos">📁</button>
-    </aside>
+    <!-- (solo móvil) zona para swipe + overlay -->
+    <div class="nxEdgeHotspot" id="nxEdgeHotspot" aria-hidden="true"></div>
+    <div class="nxOverlay" id="nxOverlay" aria-hidden="true"></div>
 
-    <!-- LEFT: panel (Plantillas/Estilos + buscador) -->
-    <section class="nxPanel" aria-label="Panel">
-      <div class="nxPanel__search">
-        <input class="nxPanel__input" placeholder="Buscar plantillas" />
-        <button class="nxPanel__mic" type="button" title="Voz">🎤</button>
-      </div>
+    <!-- LEFT: rail + panel juntos -->
+    <div class="nxLeft" id="nxLeft">
+      <aside class="nxRail" aria-label="Herramientas">
+        <button class="nxRail__item isActive" data-tab="design" title="Diseño">🎨</button>
+        <button class="nxRail__item" data-tab="elements" title="Elementos">✦</button>
+        <button class="nxRail__item" data-tab="text" title="Texto">T</button>
+        <button class="nxRail__item" data-tab="brand" title="Marca">🏷️</button>
+        <button class="nxRail__item" data-tab="uploads" title="Subidos">☁️</button>
+        <button class="nxRail__item" data-tab="projects" title="Proyectos">📁</button>
+      </aside>
 
-      <div class="nxPanel__tabs">
-        <button class="nxPanel__tab isActive" data-subtab="templates">Plantillas</button>
-        <button class="nxPanel__tab" data-subtab="styles">Estilos</button>
-      </div>
+      <section class="nxPanel" aria-label="Panel">
+        <div class="nxPanel__search">
+          <input class="nxPanel__input" placeholder="Buscar plantillas" />
+          <button class="nxPanel__mic" type="button" title="Voz">🎤</button>
+        </div>
 
-      <div class="nxPanel__content" id="leftContent">
-        <!-- aquí luego renderizamos mini-cards tipo Canva -->
-        <div class="nxHint">Aquí cargamos plantillas/estilos.</div>
-      </div>
-    </section>
+        <div class="nxPanel__tabs">
+          <button class="nxPanel__tab isActive" data-subtab="templates">Plantillas</button>
+          <button class="nxPanel__tab" data-subtab="styles">Estilos</button>
+        </div>
+
+        <div class="nxPanel__content" id="leftContent">
+          <div class="nxHint">Aquí cargamos plantillas/estilos.</div>
+        </div>
+      </section>
+    </div>
 
     <!-- CENTER: canvas -->
     <main class="nxStage">
@@ -73,7 +77,7 @@
         <div class="nxCanvasWrap">
           <div class="nxCanvas" id="stageMount"></div>
         </div>
-        <!-- FLOATING BAR (como Canva) -->
+
         <div class="nxFloatBar" id="nxFloatBar">
           <button class="nxFloatBar__pill" type="button">✨ Pídeselo a Nexia</button>
           <span class="nxFloatBar__sep">|</span>
@@ -81,7 +85,7 @@
           <button class="nxFloatBar__pill" type="button">⏱ <span id="nxTimer">5.0 s</span></button>
           <button class="nxFloatBar__pill" type="button">🪄 Borrador Mágico</button>
           <button class="nxFloatBar__pill" type="button">⚪ Posición</button>
-          <!-- dentro de .nxFloatBar -->
+
           <button class="nxFloatBar__btn" id="nxUndo" type="button" title="Deshacer">↶</button>
           <button class="nxFloatBar__btn" id="nxRedo" type="button" title="Rehacer">↷</button>
 
@@ -92,18 +96,12 @@
 
           <button class="nxFloatBar__pill" id="nxBgBtn" type="button">🎨 Fondo</button>
           <input id="nxBgColor" type="color" value="#ffffff" style="display:none" />
-
         </div>
-
       </div>
 
-      <!-- Bottom bar: páginas + zoom -->
       <footer class="nxBottom">
         <div class="nxPages">
-          <div class="nxPageThumb isActive">
-            <div class="nxPageThumb__mini"></div>
-            <span>1</span>
-          </div>
+          <!-- pages.js renderiza aquí -->
           <button class="nxPageAdd" type="button" title="Agregar página">＋</button>
         </div>
 
@@ -111,14 +109,12 @@
           <button class="nxZoom__btn" id="zoomOut" type="button">−</button>
           <input class="nxZoom__range" id="zoomRange" type="range" min="10" max="200" value="100" />
           <button class="nxZoom__btn" id="zoomIn" type="button">＋</button>
-
-          <button class="nxPageAdd" id="nxAddPage" type="button" title="Agregar página">＋</button>
           <div class="nxZoom__pct" id="zoomPct">100%</div>
         </div>
-
       </footer>
     </main>
   </div>
+
 
   <script src="https://unpkg.com/konva@9/konva.min.js"></script>
   <script type="module" src="./editor.js"></script>
